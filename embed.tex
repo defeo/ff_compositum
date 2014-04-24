@@ -153,11 +153,11 @@
 \section{Introduction}
 
 Several computer algebra systems or libraries, such as
-Magma~\cite{MAGMA}, Sage~\cite{Sage}, NTL~\cite{shoup2003ntl} or
-Flint~\cite{hart2010flint}, offer built-in features to build and
-compute in arbitrary finite fields. At the core of these designs, one
-finds algorithms for building irreducible polynomials and algorithms
-to compute embeddings and isomorphisms. The
+Magma~\cite{MAGMA}, Sage~\cite{Sage}, NTL~\cite{shoup2003ntl},
+PARI~\cite{Pari} or Flint~\cite{hart2010flint}, offer built-in
+features to build and compute in arbitrary finite fields. At the core
+of these designs, one finds algorithms for building irreducible
+polynomials and algorithms to compute embeddings and isomorphisms. The
 paper~\cite{bosma+cannon+steel97} describes the system used in Magma,
 one of the most complete we are aware of.
 
@@ -216,12 +216,12 @@ but we prefer to work with univariate polynomials (the cost of
 arithmetic operations is higher in the multivariate basis).  
 
 For $1 \le i \le n$, let then $Q_{\ell,i}$ be the minimal polynomial
-of $x_i$ in the extension $\F_p \to \K_{\ell^n}$. This polynomial does
+of $x_i$ in the extension $\K_{\ell^n}/\F_p$. This polynomial does
 not depend on $n$, but only on $i$; it is monic, irreducible of degree
 $\ell^i$ in $\F_p[x_i]$ and allows us to define $\F_{p^{\ell^i}}$ as
 $\F_p[x_i]/\ang{Q_{\ell,i}}$.
 For $1 \le i \le j \le n$, let further $Q_{\ell,i,j-i}$ be the minimal
-polynomial of $x_j$ in the extension $\F_p[x_i]/\ang{Q_{\ell,i}} \to
+polynomial of $x_j$ in the extension $\F_p[x_i]/\ang{Q_{\ell,i}} \hookrightarrow
 \K_{\ell^n}$ (as above, it does not depend on $n$). This polynomial is
 monic, irreducible of degree $\ell^{j-i}$ in
 $\F_{p^{\ell^i}}[x_j]=\F_p[x_i]/\ang{Q_{\ell,i}}[x_j]$.
@@ -245,7 +245,7 @@ to construct towers are inspired by those used
 in~\cite{Shoup90,shoup94,couveignes+lercier11} to build irreducible
 polynomials. Also used in these references is the following idea: let
 $Q_m(x)$ and $Q_n(y)$ be irreducible polynomials over $\F_p$, with
-coprime degrees $m$ and $n$, and having respectively $(a_i)_{1 \le i
+coprime degrees $m,n>1$, and having respectively $(a_i)_{1 \le i
   \le m}$ and $(b_j)_{1 \le j \le n}$ as roots in an algebraic closure
 of $\F_p$. Then their {\em composed product} $Q_{mn} = \prod_{1 \le i
   \le m, 1 \le j \le n} (z- a_i b_j)$ is irreducible of degree $mn$ in
@@ -315,7 +315,7 @@ general setting than finite fields (mild assumptions are required).
 
 \noindent{\bf Outline.}  Section~\ref{sec:prelim} presents basic
 algorithms for polynomials, as well as their {\em transposes}.  In
-Sections~\ref{sec:trace}, we introduce the main idea behind our
+Section~\ref{sec:trace}, we introduce the main idea behind our
 algorithms: the trace induces a natural duality on algebras of the
 form $\F_p[x]/\ang{Q}$, and some conversion algorithms will turn out
 to be straightforward once expressed in dual bases; the algorithms are
@@ -395,7 +395,7 @@ described in~\cite{bostan+lecerf+schost:tellegen}; it is closely
 related to the {\em middle product}~\cite{hanrot+quercia+zimmermann}.
 Let next $P$ be monic of degree $m$, and define
 $A=k[x]/\ang{P}$. Denote by $A^\ast$ the dual space of $A$, i.e.\ the
-$k$-linear forms on $A$, then we can then discuss the transposes of
+$k$-linear forms on $A$, then we can discuss the transposes of
 $\rem$ and $\mulmod$. As shown
 in~\cite{bostan+lecerf+schost:tellegen}, the dual map
 $$
@@ -411,7 +411,7 @@ sequence of minimal polynomial $P$, and outputs its first $n$ values.
 % LFSRs give a simple, though suboptimal, implementation of this
 % operator.
 The transposed version of the Cook-Sieveking-Kung fast
-Euclidean division algorithm yield better algorithms: like the
+Euclidean division algorithm yields a better algorithm: like the
 forward direction, the cost of the transposed algorithm is
 $O(n\M(m)/m)$ operations in $k$~\cite{vzgathen+shoup92:journal,shoup99}.
 
@@ -462,7 +462,7 @@ let $\ang{.,.}'$ be a bilinear form $E'\times F' \to k$. Then, to
 any linear mapping $u:E\to E'$, one associates its {\em dual}
 (with respect to $\ang{.,.}$ and $\ang{.,.}'$), which is a linear
 mapping $u^t: F' \to F$ characterized by the equality
-$\ang{u(a),b'}'=\ang{a,u^t(b')}$, for all $a\in E$ and $b'$ in $F'$.
+$\ang{u(a),b'}'=\ang{a,u^t(b')}$, for all $a\in E$ and $b'\in F'$.
 
 Let as above $\bxi$ be a basis of $E$, and let $\bxi^\ast$ be
 the dual basis of $F$; consider as well a basis $\bupsilon$ of $E'$ and
@@ -515,7 +515,7 @@ such conversions have quasi-linear complexity.
 
 \smallskip\noindent{{\bf \rm Univariate conversion.}} 
 Let $P$ be monic of degree $m$ and squarefree in $k[x]$, and define
-$A=k[x]/\ang{P}$. We denote by $\tau_P$ the trace modulo the ideal $\ang{P}$.
+$A=k[x]/\ang{P}$. We denote by $P'$ its derivative and by $\tau_P$ the trace modulo the ideal $\ang{P}$.
 
 The $k$-algebra $A$ is endowed with the canonical monomial basis
 $\bxi=(x^i)_{0 \le i < m}$. In view of what was said in the previous
@@ -1089,7 +1089,10 @@ Lemma~\ref{lemma:tiso2}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{The algebraic closure of $\large\F_p$}\label{sec:fpbar}
+{
+\def\Fp{\F_p}
+\section{The algebraic closure of \large$\protect\Fp$}\label{sec:fpbar}
+}
 
 In this section, we explain how the algorithms of
 Section~\ref{sec:emb-iso} can be used in order to construct and work
