@@ -363,99 +363,40 @@ the mapping $\mulmod(.,b,P)$, which maps $a \in A$ to $ab \bmod P$; it
 can be computed in time $O(\M(m))$. Finally, given an integer $m$, the
 reversal operator in length $m$ is 
 $$
-\begin{array}{cccc}
-\rev(.,m): &k[x]_m &\to& k[x]_m  \\
-& a & \mapsto & x^{m-1} a(1/x).
+\begin{array}{cccc} \rev(.,m): &k[x]_m &\to& k[x]_m \\ & a & \mapsto &
+x^{m-1} a(1/x).
 \end{array}$$ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{The transposition principle}
-\label{sec:algor-dual-basis}
+\subsection{Duality and the transposition principle}\label{ssec:duality}
 
 The {\em transposition principle} is an algorithmic result which
-states that given an algorithm that performs an $r \times s$
-matrix-vector product $u \mapsto M u$, one can deduce an algorithm
-with the same cost, up to $O(\max(r,s))$, which performs the
-transposed matrix-vector product $v \mapsto M^t
-v$~\cite[Ch.~13]{burgisser+clausen-shokrollahi}.
+states that, given an algorithm that performs a matrix-vector product
+$u \mapsto M u$, one can deduce an algorithm with essentially the same
+cost which performs the transposed matrix-vector product $v \mapsto
+M^t v$~\cite[Ch.~13]{burgisser+clausen-shokrollahi}.
 
-Although that theorem is constructive, the proof involves going down
-to the DAG representation of the algorithm, which is hardly
-convenient.  In the rest of this article, we will reuse techniques
-from~\cite{bostan+lecerf+schost:tellegen} in order to simplify the
-transposition process: in a nutshell, most of our algorithms will rely
-on a few basic operations (such as polynomial or matrix
-multiplication), and their transposes are obtained by transposing each
-basic subroutine, and reversing their order.
+Following~\cite{df+thesis}, we give here a more abstract presentation
+of the transposition principle, using the algebraic theory of duality
+(see~\cite[Ch.~IX.1.8]{BourbakiAlgCom9}). The added level abstraction
+will pay off by greatly simplifying the proofs of the next sections.
 
-Let us briefly review the transposes of operations described in the
-previous subsection. The transpose of polynomial multiplication is
-described in~\cite{bostan+lecerf+schost:tellegen}; it is closely
-related to the {\em middle product}~\cite{hanrot+quercia+zimmermann}.
-Let next $P$ be monic of degree $m$, and define
-$A=k[x]/\ang{P}$. Denote by $A^\ast$ the dual space of $A$, i.e.\ the
-$k$-linear forms on $A$, then we can discuss the transposes of
-$\rem$ and $\mulmod$. As shown
-in~\cite{bostan+lecerf+schost:tellegen}, the dual map
-$$
-\begin{array}{cccc}
-\rem^t(.,P,n): &k^m& \to &k^n
-\end{array}$$ 
-takes as input a form $\ell\in A^\ast$ given by the values
-$(\ell(x^i))_{0 \le i < m}$; the output is then the values
-$(\ell(x^i))_{0 \le i < n}$. For $n < m$, there is nothing to do. For
-greater values of $n$, $\rem^t$ is \emph{linear sequence extension}:
-it takes as input the initial $m$ values of a linear recurring
-sequence of minimal polynomial $P$, and outputs its first $n$ values.
-% LFSRs give a simple, though suboptimal, implementation of this
-% operator.
-The transposed version of the Cook-Sieveking-Kung fast
-Euclidean division algorithm yields a better algorithm: like the
-forward direction, the cost of the transposed algorithm is
-$O(n\M(m)/m)$ operations in $k$~\cite{vzgathen+shoup92:journal,shoup99}.
+Let $E$ and $F$ be $k$-vector spaces, with $\dim(E)=\dim(F) < \infty$,
+and suppose that $\ang{.,.}: E\times F \to k$ is a non-degenerate
+bilinear form.  Then, to any vector space basis $\bxi=(\xi_i)_i$ of
+$E$, we can associate a unique \emph{dual basis}
+$\bxi^\ast=(\xi_i^\ast)_i$ of $F$ such that $ \ang{\xi_i,\xi^\ast_j} =
+\delta_{i,j}$ (the Kronecker symbol).  In other words, given $a$ in
+$F$, the coefficients $(a_i)$ of $a$ on the basis $\bxi^\ast$ are
+given by $a_i=\ang{\xi_i, a}$.
 
-Multiplication by a fixed $b\in A$ is a linear map $M_b:A\to A$. By
-definition, the dual map $M_b^t: A^* \to A^*$ maps a linear form to $b
-\cdot \ell$, which is such that $(b \cdot \ell)(a)
-=\ell(ab)$. Algorithms for $\mulmod^t$ have been subject to much
-research (for instance, Berlekamp's \emph{bit serial
-  multiplication}~\cite{Berlekamp82} is a popular arithmetic circuit
-for $\mulmod^t$ in the case $k=\F_2$); algorithms of cost $O(\M(m))$
-are given in~\cite{shoup99,bostan+lecerf+schost:tellegen}. 
-
-Lastly, the reversal operator on $k[x]_m$ is its own transpose.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section{Trace and duality}\label{sec:trace}
-
-Next, we discuss some classical facts about dualities induced by
-non-degenerate bilinear forms, pairs of primal / dual bases, and give
-change-of-basis algorithms for a useful particular case. In all this
-section, $k$ is a perfect field.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Duality}\label{ssec:duality}
-
-A general reference for what follows
-is~\cite[Ch.~IX.1.8]{BourbakiAlgCom9}. Let $E$ and $F$ be $k$-vector
-spaces, with $\dim(E)=\dim(F) < \infty$; suppose further that
-$\ang{.,.}: E\times F \to k$ is a non-degenerate bilinear form.
-Then, to any vector space basis $\bxi=(\xi_i)_i$ of $E$, we
-can associate a unique \emph{dual basis}
-$\bxi^\ast=(\xi_i^\ast)_i$ of $F$ such that $
-\ang{\xi_i,\xi^\ast_j} = \delta_{i,j}$ (the Kronecker symbol).
-
-In other words, given $a$ in $F$, the coefficients $(a_i)$ of $a$ on
-the basis $\bxi^\ast$ are given by $a_i=\ang{\xi_i, a}$. A
-standard example (implicitly used in the previous section) is the case
-where $F$ is the dual $E^*$ of $E$, with $\ang{v,\ell}=\ell(v)$ for
-all $v\in E$ and $\ell \in E^*$; we will see in the next subsection
-another family of examples, with $E=F$.
+For example, denote by $E^\ast$ the dual space of $E$, i.e.\ the
+$k$-linear forms on $E$. The bilinear form on $E\times E^\ast$ defined
+by with $\ang{v,\ell}=\ell(v)$ for all $v\in E$ and $\ell \in E^*$ is
+non-degenerate. This is indeed the canonical example, and any
+non-degenerate form, is isomorphic to this one. We will see in the
+next section another family of examples, with $E=F$.
 
 Let $E',F'$ be two further vector spaces, with $\dim(E')=\dim(F')$ and
 let $\ang{.,.}'$ be a bilinear form $E'\times F' \to k$. Then, to
@@ -468,11 +409,63 @@ Let as above $\bxi$ be a basis of $E$, and let $\bxi^\ast$ be
 the dual basis of $F$; consider as well a basis $\bupsilon$ of $E'$ and
 its dual basis $\bupsilon^\ast$ of $F'$. If $M$ is the matrix of $u$ in
 the bases $(\bxi,\bupsilon)$, the matrix of $u^t$ in the bases
-$(\bupsilon^\ast,\bxi^\ast)$ is the transpose of $M$. The
-transposition principle then implies that, from an algorithm that
-computes $u: E \to E'$ in the bases $(\bxi,\bupsilon)$, we deduce the
-existence of an algorithm for the dual map $u^t: F' \to F$ in the
-bases $(\bupsilon^\ast,\bxi^\ast)$, with essentially the same cost.
+$(\bupsilon^\ast,\bxi^\ast)$ is the transpose of $M$. 
+
+As presented in~\cite{bostan+lecerf+schost:tellegen,df+thesis}, the
+transposition principle is an algorithmic technique that, given an
+algorithm to compute $u: E \to E'$ in the bases $(\bxi,\bupsilon)$,
+yields an algorithm for the dual map $u^t: F' \to F$ in the bases
+$(\bupsilon^\ast,\bxi^\ast)$. The two algorithms have same cost, up to
+$O(\dim E+\dim E')$. In a nutshell, starting from an algorithm relying
+on a few basic operations (such as polynomial or matrix
+multiplication), its transpose is obtained by transposing each basic
+subroutine, then reversing their order.
+
+Let us briefly review the transposes of operations described in the
+previous subsection. The transpose of polynomial multiplication is
+described in~\cite{bostan+lecerf+schost:tellegen}; it is closely
+related to the {\em middle product}~\cite{hanrot+quercia+zimmermann}.
+Let next $P$ be monic of degree $m$, and define $A=k[x]/\ang{P}$. As
+shown in~\cite{bostan+lecerf+schost:tellegen}, the dual map of \rem
+$$
+\begin{array}{cccc}
+\rem^t(.,P,n): &A^\ast& \to &k[x]_n^\ast
+\end{array}$$ 
+is equivalent to \emph{linear sequence extension}:
+it takes as input the initial $m$ values of a linear recurring
+sequence of minimal polynomial $P$, and outputs its first $n$ values.
+% LFSRs give a simple, though suboptimal, implementation of this
+% operator.
+The transposed version of the Cook-Sieveking-Kung fast Euclidean
+division algorithm yields an algorithm with cost $O(n\M(m)/m)$
+operations in $k$~\cite{vzgathen+shoup92:journal,shoup99}.
+
+For a fixed $b\in A$, the transpose of \mulmod\ is the map
+$$
+\begin{array}{cccc}
+\mulmod^t(.,b,P): & A^\ast &\to& A^\ast \\
+& \ell & \mapsto & b\cdot\ell,
+\end{array}
+$$ 
+where $b \cdot \ell$ is defined by $(b \cdot \ell)(a)
+=\ell(ab)$. Algorithms for $\mulmod^t$ have been subject to much
+research (for instance, Berlekamp's \emph{bit serial
+  multiplication}~\cite{Berlekamp82} is a popular arithmetic circuit
+for $\mulmod^t$ in the case $k=\F_2$); algorithms of cost $O(\M(m))$
+are given in~\cite{shoup99,bostan+lecerf+schost:tellegen}.
+
+Lastly, the reversal operator on $k[x]_m$ is its own transpose.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Trace and duality}\label{sec:trace}
+
+Next, we discuss some classical facts about the trace from, and give
+algorithms to change between monomial bases and their duals. In all
+this section, $k$ is a perfect field.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -748,7 +741,7 @@ bases.
   as claimed; for $r=mn$, this is exactly the representation of
   $\Phi(bc)$ on the dual basis $\bzeta^\ast$ of $k[z]/\ang{R}$. The
   cost of the two calls to $\rem^t$ is given in
-  Section~\ref{sec:algor-dual-basis}; the last step takes $r$
+  Section~\ref{ssec:duality}; the last step takes $r$
   multiplications in $k$.
 \end{proof}
 
