@@ -974,10 +974,9 @@ b&=&\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^j\\
 &=&\sum_{\ell=-m+1}^{n-1}\sum_{i=0}^{m-1} b_{i,i+\ell}(xy)^i y^\ell\\
 &=&\frac{1}{y^{m-1}} \sum_{\ell=0}^{m+n-2} h_\ell(xy) y^\ell,
 \end{eqnarray*}
-with $h_\ell(z)=\sum_{0 \le i < m-1} b_{i,i+\ell-m+1} z^i$ for all
-$\ell$ (undefined indices are set to zero); since $m \le n$, all
-$h_\ell$ have indeed degree less than $m$. This implies that
-$a=\Phi(b)$ has the form
+with $h_\ell(z)=\sum_{0 \le i < m} b_{i,i+\ell-m+1} z^i$ for all
+$\ell$ (undefined indices are set to zero). Hence $a=\Phi(b)$ has the
+form
 $$a = \frac{1}{T^{m-1}}\widetilde{a} \mod R\quad\text{with}\quad
 \widetilde{a}=\sum_{\ell=0}^{m+n-2} h_\ell T^\ell,$$ where
 $T=\Phi(y)$.  We use baby steps / giant steps techniques
@@ -1033,7 +1032,6 @@ that input {\em and} output are written on the monomial bases.
 \item $T'=[T^i \bmod R]_{0 \le i \le q}$
 \item $M_{T'}=[T'_{i,j}]_{0\le i < q, 0, \le j < n}$ \hfill $T'_{i,j}$ as defined above
 \item $\va = \mulmod^t(\va, U^{m-1}, R)$
-\item $V'=[\ ]_{0 \le i < p}$
 \item {\bf for} {$i=0,\dots,p-1$}
 \item \hspace{7mm} $V'_i = \va$
 \item \hspace{7mm} $\va = \mulmod^t(\va,T'_q,R)$
