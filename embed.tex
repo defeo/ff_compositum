@@ -157,9 +157,9 @@ Magma~\cite{MAGMA}, Sage~\cite{Sage}, NTL~\cite{shoup2003ntl},
 PARI~\cite{Pari} or Flint~\cite{hart2010flint}, offer built-in
 features to build and compute in arbitrary finite fields. At the core
 of these designs, one finds algorithms for building irreducible
-polynomials and algorithms to compute embeddings and isomorphisms. The
-paper~\cite{bosma+cannon+steel97} describes the system used in Magma,
-one of the most complete we are aware of.
+polynomials and algorithms to compute embeddings and isomorphisms.
+The system used in Magma (one of the most complete we know of) is
+described in~\cite{bosma+cannon+steel97}.
 
 Previous algorithms typically rely on linear algebra techniques, for
 instance to describe embeddings or isomorphisms (this is the case for
@@ -172,7 +172,7 @@ exploiting fast polynomial multiplication to obtain algorithms of
 quasi-linear complexity. As we will see, we meet this goal for
 several, but not all, operations.
 
-\paragraph*{{\bf \rm Setup}}
+\noindent{{\bf \rm Setup.}}
 Let $p$ be a prime (that will be fixed throughout this paper). We are
 interested in describing extensions $\F_{p^n}$ of $\F_p$; such an
 extension has dimension $n$ over $\F_p$, so representing an element in
@@ -180,21 +180,19 @@ it involves $n$ base field elements.
 
 It is customary to use polynomial arithmetic to describe these
 extensions (but not necessary: Lenstra's algorithm~\cite{LenstraJr91}
-uses an entire multiplication tensor, which has size $n^3$). Given an
-extension degree $n$, a first step is then to construct an irreducible
-polynomial $Q_n$ of degree $n$ in $\F_p[x]$. This will allow us to
-identify $\F_{p^n}$ with $\F_p[x]/\ang{Q_n}$; then, using fast
-Euclidean division and extended GCD, operations $(+,\times,\div)$ in
-$\F_p[x]/\ang{Q_n}$ all take quasi-linear time in~$n$.
+uses a multiplication tensor). For an extension degree $n$, a
+first step is to construct an irreducible polynomial $Q_n$ of degree
+$n$ in $\F_p[x]$. Identifying $\F_{p^n}$ with $\F_p[x]/\ang{Q_n}$,
+operations $(+,\times,\div)$ in $\F_p[x]/\ang{Q_n}$ all take
+quasi-linear time in~$n$.
 
-However, this is not sufficient, as we also want mechanisms to perform
-(for instance) field embeddings. Given irreducible polynomials $Q_m$
-and $Q_n$ over $\F_p$, with $\deg(Q_m)=m$ dividing $\deg(Q_n)=n$,
-there certainly exist algorithms that determine an embedding
-$\F_p[x]/\ang{Q_m} \to \F_p[x]/\ang{Q_n}$. However, as said above,
-most algorithms use linear algebra techniques. In order for the system
-to be consistent, note that these embeddings must be {\em
-  compatible}~\cite{bosma+cannon+steel97}.
+However, this is not sufficient: we also want mechanisms for
+e.g. field embeddings. Given irreducible polynomials $Q_m$ and $Q_n$
+over $\F_p$, with $\deg(Q_m)=m$ dividing $\deg(Q_n)=n$, there exist
+algorithms to embed $\F_p[x]/\ang{Q_m}$ in 
+$\F_p[x]/\ang{Q_n}$ (for the system to be consistent, these embeddings
+must be {\em compatible}~\cite{bosma+cannon+steel97}). However, most
+algorithms use linear algebra techniques.
 
 To bypass these issues, we use an approach inspired by Shoup's
 algorithm for computing irreducible polynomials~\cite{Shoup90,shoup94}
@@ -287,42 +285,38 @@ on $\M$~\cite[Chapter~8]{vzGG}.
   $\F_p[x]/\ang{Q_m}$ (resp.\ $\F_p[x]/\ang{Q_n}$), or invert it on its
   image, using $O(n\M(m)+m\M(n))$ operations in $\F_p$.
 
-  Suppose without loss of generality that $m \le n$. Then one can
-  apply $\Phi$ to an element of $\F_p[x,y]/\ang{Q_m, Q_n}$, or invert it, using either
-  $O(m^2 \M(n))$ or $O(\M(mn)n^{1/2}+\M(m) n^{(\omega+1)/2} )$
-  operations in $\F_p$.
+  Suppose that $m \le n$. Then one can
+  apply $\Phi$ to an element of $\F_p[x,y]/\ang{Q_m, Q_n}$ or invert
+  it using either $O(m^2 \M(n))$ or $O(\M(mn)n^{1/2}+\M(m)
+  n^{(\omega+1)/2} )$ operations in $\F_p$.
 \end{Theo}
 
 Using the $O\tilde{~}$ notation to neglect polylogarithmic factors, we
-can take $\M(n) \in O\tilde{~}(n)$.  Then, our algorithm for
-embeddings and their inverses has quasi-linear complexity
-$O\tilde{~}(mn)$. Our two solutions for $\Phi$ or its inverse have
-respective costs $O\tilde{~}(m^2 n)$ and $O\tilde{~}(m
-n^{(\omega+1)/2})$. The minimum of the two is seen to lie in
+can take $\M(n) \in O\tilde{~}(n)$.  Our algorithm for embeddings and
+their inverses has quasi-linear cost $O\tilde{~}(mn)$.  Those for
+$\Phi$ or $\Phi^{-1}$ have respective costs $O\tilde{~}(m^2 n)$ and
+$O\tilde{~}(m n^{(\omega+1)/2})$; the minimum of the two is in
 $O\tilde{~}( (mn)^{2\omega/(\omega+1)})$; for $\omega \in (2,3]$, the
-resulting exponent lies in $(1.333\dots, 1.5]$.  Thus, although our
-algorithm for embedding is essentially optimal, our algorithm for
-isomorphism is not (but it improves on previous results).
+  resulting exponent is in $(1.333\dots, 1.5]$.  
 
-We point out that if $S=\Phi(x)$ and $T=\Phi(y)$ are known, a result
-by Kedlaya and Umans~\cite{KeUm11} for modular composition, and its
-extension in~\cite{PoSc13a}, yield an algorithm with {\em boolean
-  complexity} essentially linear in $mn$ and $\log(p)$ (on a
-RAM). Unfortunately, making these algorithms competitive in practice
-is challenging; indeed, we are not aware of any implementation of
-them. It is also worth noting that our algorithms apply in a more
-general setting than finite fields (mild assumptions are required).
+If $S=\Phi(x)$ and $T=\Phi(y)$ are known, a result by Kedlaya and
+Umans~\cite{KeUm11} for modular composition, and its extension
+in~\cite{PoSc13a}, yield an algorithm with {\em bit complexity}
+essentially linear in $mn$ and $\log(p)$ on a RAM. Unfortunately,
+making these algorithms competitive in practice is challenging; we are
+not aware of any implementation of them. It is also worth noting that
+our algorithms apply in a more general setting than finite fields
+(mild assumptions are required).
 
-\noindent{\bf Outline.}  Section~\ref{sec:prelim} presents basic
-algorithms for polynomials, as well as their {\em transposes}.  In
-Section~\ref{sec:trace}, we introduce the main idea behind our
-algorithms: the trace induces a natural duality on algebras of the
-form $\F_p[x]/\ang{Q}$, and some conversion algorithms will turn out
-to be straightforward once expressed in dual bases; the algorithms are
-detailed in Section~\ref{sec:emb-iso}. Section~\ref{sec:fpbar}
-explains how the results in this paper can be used in order to
-construct the algebraic closure of $\F_p$, and we conclude with some
-experimental results.
+\smallskip\noindent{\bf Outline.}  Section~\ref{sec:prelim} presents
+basic algorithms for polynomials and their transposes.
+Section~\ref{sec:trace} introduces the main idea behind our
+algorithms: the trace induces a duality on algebras of the form
+$\F_p[x]/\ang{Q}$, and some conversion algorithms are straightforward
+in dual bases; the algorithms are detailed in
+Section~\ref{sec:emb-iso}. Section~\ref{sec:fpbar} explains how the
+results in this paper can be used in order to construct the algebraic
+closure of $\F_p$. We conclude with experimental results.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -460,32 +454,27 @@ Lastly, the reversal operator on $k[x]_m$ is its own transpose.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Trace and duality}\label{sec:trace}
+\section{Trace and duality}\label{sec:trace}\label{ssec:conversions}\label{sec:trace-formulas}
 
 Next, we discuss some classical facts about the trace from, and give
 algorithms to change between monomial bases and their duals. In all
-this section, $k$ is a perfect field.
+this section, $k$ is a perfect field. General reference for the
+following are~\cite{Kunz86,Cox-Little-OShea:UAG2005}.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Traces in reduced algebras}
-
-General reference for the following
-are~\cite{Kunz86,Cox-Little-OShea:UAG2005}. Suppose now that $s$ is a
-positive integer, and $I$ a zero dimensional radical ideal in
-$k[x_1,\dots,x_s]$. Thus, $A=k[x_1,\dots,x_s]/I$ is a reduced
+\smallskip\noindent{{\bf \rm Traces in reduced algebras.}} 
+Let $s$ be a positive integer and $I$ a zero dimensional radical ideal
+in $k[x_1,\dots,x_s]$. Thus, $A=k[x_1,\dots,x_s]/I$ is a reduced
 $k$-algebra of finite dimension $d$, where $d$ is the cardinality of
-$V=V(I) \subset\overline{k}^s$ (but in general, $A$ is not a field).
+$V=V(I) \subset\overline{k}^s$ (in general, $A$ is not a field).
 
 Let $a$ be in $A$. As we did in the case of one variable, we associate
 to $a$ the endomorphism of multiplication-by-$a$ $M_a: A \to A$ given
-by $M_a(b)=ab$.  Even though $A$ may not be a field, we may still
-define the {\em minimal polynomial} of $a$ as the minimal polynomial
-of $M_a$; since $I$ is radical, this polynomial is squarefree, with
-roots $a(x)$, for $x$ in $V$. Similarly, we define the \emph{trace} of
-$a$ as the trace of $M_a$, and denote it by $\tau_I(a)$. Thanks to $I$
-being radical, the trace defines a non-degenerate bilinear form on
+by $M_a(b)=ab$.  Even though $A$ may not be a field, we still define
+the {\em minimal polynomial} of $a$ as the minimal polynomial of
+$M_a$; since $I$ is radical, this polynomial is squarefree, with roots
+$a(x)$, for $x$ in $V$. Similarly, the \emph{trace} of $a$
+is the trace of $M_a$, and denote it by $\tau_I(a)$. Because $I$
+is radical, the trace defines a non-degenerate bilinear form on
 $A\times A$, given by $\ang{a,b}_I = \tau_I(ab)$.
 
 Thus, to any basis $\bxi=(\xi_i)_{0 \le i < d}$ of $A$, one can
@@ -494,12 +483,6 @@ such that $\ang{\xi_i, \xi^\ast_j}_I=\delta_{i,j}$ for all
 $i,j$.  It will be useful to keep in mind that for $a \in A$, its
 expression on the dual basis $\bxi^\ast$ is $a=\sum_{0 \le i < d}
 \ang{a,\xi_i}_I \xi^\ast_i$.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Conversion algorithms} \label{ssec:conversions}
-\label{sec:trace-formulas}
 
 We now describe algorithms for converting between the monomial basis and its
 dual, in two particular cases, involving respectively univariate
@@ -520,15 +503,14 @@ algorithm. This is a restatement of well-known results, see for
 instance the proof of~\cite[Theorem~3.1]{rouiller99}.
 
 \begin{Lemma}\label{lemma:trace:1}
-  For $a=\sum_{0 \le i < m} a_i x^i$ in $A$, the following equality
+  For $a$ in $A$, the following
   holds in $k[[x]]$:
   $$\sum_{i \ge 0} \tau_P(a x^i) x^i = \frac{\rev( P' a \bmod P,m)}{\rev(P,m+1)}.$$
 \end{Lemma}
 
-From the lemma, a pair of well-known algorithms to convert between
-$\bxi$ and $\bxi^\ast$ follows easily. In these algorithms, and all
-that follows, input and output are vectors (written in {\sf sans
-  serif} font).
+Some well-known algorithms to convert between $\bxi$ and $\bxi^\ast$
+follow easily. In these algorithms, and all that follows, input and
+output are vectors (written in {\sf sans serif} font).
 
 \begin{algorithm_noendline}
 {MonomialToDual$(\va,P)$}
@@ -568,7 +550,7 @@ that follows, input and output are vectors (written in {\sf sans
   by fast XGCD; all other steps take $O(\M(m))$ operations in $k$.
 \end{proof}
 
-\noindent{{\bf \rm Bivariate conversions.}} Now we consider two monic
+\vspace{-1ex}\noindent{{\bf \rm Bivariate conversions.}} Now we consider two monic
 squarefree polynomials $P$ in $k[x]$ of degree $m$, and $Q$ in $k[y]$
 of degree $n$. We define $A=k[x,y]/I$, with $I=\ang{P,Q}$,
 then $A$ has the canonical monomial basis $(x^i y^j)_{0 \le i <m, 0
@@ -634,17 +616,15 @@ Let $R \in k[z]$ be the minimal polynomial of $xy$ in the extension
 $A/k$ (equivalently, the roots of $R$ are the products $r_i s_j$);
 this polynomial is known as the {\em composed product} of $P$ and $Q$,
 and we will denote it $R = P \odot Q$. As $k$-algebras, we have $A
-\simeq k[x]/\ang{R}$, so there exist embeddings of the form
+\simeq k[x]/\ang{R}$, so there exist embeddings $\varphi_x$, $\varphi_y$, 
+and an isomorphism $\Phi$
+of the form
 $$
 \begin{array}{ccccc}
 &\varphi_x: & k[x]/\ang{P} & \to & k[z]/\ang{R}\\[2mm]
-\text{and} & \varphi_y: & k[y]/\langle Q \rangle & \to & k[z]/\ang{R};
-\end{array}
-$$
-we also have an isomorphism 
-$$\begin{array}{cccc} 
-\Phi:&  A=k[x,y]/\langle P,Q\rangle & \to & k[z]/\ang{R} \\
-&  xy & \mapsfrom & z.
+& \varphi_y: & k[y]/\langle Q \rangle & \to & k[z]/\ang{R}\\[2mm]
+\text{and}& \Phi:&  A=k[x,y]/\langle P,Q\rangle & \to & k[z]/\ang{R} \\
+& &  xy & \mapsfrom & z.
 \end{array}$$
 In this section, we give algorithms for computing $R$, applying
 $\varphi_x$, $\varphi_y$ and their sections, and finally $\Phi$ and its inverse. Except from the
@@ -732,17 +712,17 @@ bases.
   Recall that for $0 \le i <m$, $b_i = \tau_P(bx^i)$, and that for $0
   \le i < n$, $c_i = \tau_Q(cy^i)$. By definition of $\rem^t$, the
   sequences $(t_i)$ and $(u_i)$ encode the same traces, but up to
-  index $r$.  By Lemma~\ref{lemma:traces:PQR}, the algorithm
+  index $r$.  By Lemma~\ref{lemma:traces:PQR}, the algorithm correctly
   computes
-  \begin{eqnarray*}
-    \bigl(\tau_P(bx^i)\tau_Q(cy^i)\bigr)_{i<r} &=&  \bigl(\tau_R(\Phi(bc x^i y^i))\bigr)_{i<r}\\
-    &=&  \bigl(\tau_R(\Phi(bc) z^i))\bigr)_{i<r},
-  \end{eqnarray*}
-  as claimed; for $r=mn$, this is exactly the representation of
-  $\Phi(bc)$ on the dual basis $\bzeta^\ast$ of $k[z]/\ang{R}$. The
-  cost of the two calls to $\rem^t$ is given in
-  Section~\ref{ssec:duality}; the last step takes $r$
-  multiplications in $k$.
+  %% \begin{eqnarray*}
+  %%   \bigl(\tau_P(bx^i)\tau_Q(cy^i)\bigr)_{i<r} &=&  \bigl(\tau_R(\Phi(bc x^i y^i))\bigr)_{i<r}\\
+  %%   &=&  \bigl(\tau_R(\Phi(bc) z^i))\bigr)_{i<r},
+  %% \end{eqnarray*}
+$$ \bigl(\tau_P(bx^i)\tau_Q(cy^i)\bigr)_{i<r} = \bigl(\tau_R(\Phi(bc)
+  z^i))\bigr)_{i<r};$$ for $r=mn$, this is indeed the representation
+  of $\Phi(bc)$ on the dual basis $\bzeta^\ast$ of $k[z]/\ang{R}$. The
+  cost of the calls to $\rem^t$ is in Section~\ref{ssec:duality}; the
+  last step takes $r$ multiplications in~$k$.
 \end{proof}
 
 In particular, the map $\varphi_x$ is computed as
@@ -789,10 +769,10 @@ k[z]/\ang{R} \to k[x]/\ang{P}$ be its dual map with respect to the
 bilinear forms $\ang{.,.}_P$ and $\ang{.,.}_R$. Then, for $b$ and $b'$
 in $k[x]/\ang{P}$, we have
 \begin{eqnarray*}
-\ang{b,b'}_P = \tau_P(b b') &=&  \tau_P(b b')\tau_Q(c) \\
-&=& \tau_R( \Phi(b b' c))\\
-&=& \ang{\epsilon(b), \Phi(b')}_R \\
-&=& \ang{b, \epsilon^t(\Phi(b'))}_P,
+  \ang{b,b'}_P &=& \tau_P(b b') ~=~  \tau_P(b b')\tau_Q(c) 
+~=~ \tau_R( \Phi(b b' c))\\
+&=& \ang{\epsilon(b), \Phi(b')}_R 
+~=~ \ang{b, \epsilon^t(\Phi(b'))}_P,
 \end{eqnarray*}
 where the third equality comes from
 Lemma~\ref{lemma:traces:PQR}. Using the non-degeneracy of
@@ -866,9 +846,8 @@ similar to the one we did regarding the transpose of {\sf Embed}. Let
 $\Phi^t$ be the dual map of $\Phi$ with respect to $\ang{.,.}_I$ and
 $\ang{.,.}_R$. Then, for any $b,b' \in k[z]/\ang{R}$, we have:
 \begin{eqnarray*}
-\ang{b,b'}_I=\tau_I(b b') &=&  \tau_R(\Phi(b b'))\\
-&=& \ang{\Phi(b), \Phi(b')}_R \\
-&=& \ang{b, \Phi^t(\Phi(b'))}_I;
+\ang{b,b'}_I&=&\tau_I(b b') ~=~  \tau_R(\Phi(b b'))\\
+&=& \ang{\Phi(b), \Phi(b')}_R ~=~  \ang{b, \Phi^t(\Phi(b'))}_I;
 \end{eqnarray*}
 hence, $\Phi^t = \Phi^{-1}$. If ${\bf b}$ and ${\bf b}^\ast$ are two
 bases of $A=k[x,y]/I$, dual with respect to $\ang{.,.}_I$ (such as the
@@ -887,15 +866,13 @@ compared to $n$.
 Let $b$ be in $k[x,y]/I$ and let $a=\Phi(b)$. Writing $b=\sum_{0 \le i
   < m} b_i x^i$, with all $b_i$ in $k[y]/\ang{Q}$, we obtain a
 straightforward algorithm to compute $a$: compute all $\Phi(b_i x^i)$
-using {\sf Embed}, then sum.
-
-Since {\sf Embed} takes its inputs written on the dual bases, the
-following algorithm requires all $b_i$ be written on the dual basis of
-$k[y]/\ang{Q}$ (equivalently, the input is given on the basis $\bxi
-\otimes \bupsilon^\ast$ of $A$). We also use the observation that
-the expression of $x^i$ on the dual basis $\bxi^\ast$ is $\vu_P$
-shifted by $i$ positions to give a slightly more compact algorithm, 
-called {\sf Phi1}.
+using {\sf Embed}, then sum. Since {\sf Embed} takes its inputs
+written on the dual bases, the following algorithm requires all $b_i$
+be written on the dual basis of $k[y]/\ang{Q}$ (equivalently, the
+input is given on the basis $\bxi \otimes \bupsilon^\ast$ of $A$). We
+also use the fact that the expression of $x^i$ on the dual
+basis $\bxi^\ast$ is $\vu_P$ shifted by $i$ positions to give a
+ more compact algorithm, called {\sf Phi1}.
 
 Transposing this algorithm then gives an algorithm for
 $\Phi^{-1}$. Its input is given on the monomial basis $(z^i)_{0 \le i
@@ -952,20 +929,20 @@ $\bxi^\ast \otimes \bupsilon$ of $A$.
   each of which costs $O(m\M(n))$.
 \end{proof}
 
-\noindent{{\bf \rm Second case: $m$ is not small.}}  The previous
+\vspace{-2ex} \noindent{{\bf \rm Second case: $m$ is not small.}}  The previous
 algorithms are most efficient when $m$ is small; now, we propose an
 alternative solution that does better when $m$ and $n$ are of the same
-order of magnitude (with still $m \le n$)
+order of magnitude (with still $m \le n$).
 
 This approach is based on baby steps / giant steps techniques, as in
 Brent and Kung's modular composition algorithm, but uses the fact that
 $z=\Phi(xy)$ to reduce the cost. Given $b$ in $A=k[x,y]/\ang{P,Q}$,
 let us write
 \begin{eqnarray*}
-b&=&\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^j\\
-&=&\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^i y^{j-i}\\
-&=&\sum_{\ell=-m+1}^{n-1}\sum_{i=0}^{m-1} b_{i,i+\ell}(xy)^i y^\ell\\
-&=&\frac{1}{y^{m-1}} \sum_{\ell=0}^{m+n-2} h_\ell(xy) y^\ell,
+b&=&\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^j
+=~\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^i y^{j-i}\\
+&=&\sum_{\ell=-m+1}^{n-1}\sum_{i=0}^{m-1} b_{i,i+\ell}(xy)^i y^\ell
+=~\frac{1}{y^{m-1}} \sum_{\ell=0}^{m+n-2} h_\ell(xy) y^\ell,
 \end{eqnarray*}
 with $h_\ell(z)=\sum_{0 \le i < m} b_{i,i+\ell-m+1} z^i$ for all
 $\ell$ (undefined indices are set to zero). Hence $a=\Phi(b)$ has the
@@ -975,17 +952,16 @@ $$a = \frac{1}{T^{m-1}}\widetilde{a} \mod R\quad\text{with}\quad
 $T=\Phi(y)$.  We use baby steps / giant steps techniques
 from~\cite{LeMeSc13} (inspired by Brent and Kung's algorithm) to
 compute $a$, reducing the problem to polynomial matrix
-multiplication. Let
-$$n'=m+n-1,\quad p=\lceil \sqrt {n'} \rceil,\quad q=\lceil
-n'/p\rceil,$$ so that $n \le n' \le 2n-1$ and $p\simeq q \simeq
-\sqrt{n}$.  For baby steps, we compute the polynomials $T_i=T^i \bmod
-R$, which have degree at most $mn-1$; we write $T_i = \sum_{0 \le j <
-  n} T'_{i,j} z^{jm}$, with $T'_{i,j}$ of degree less than $m$, and
-build the polynomial matrix $M_{T'}$ with entries $T'_{i,j}$.  We also
-define the matrix $M_H=[h_{iq+j}]_{0 \le i <p, 0 \le j < q}$
+multiplication. Let $n'=m+n-1,$ $p=\lceil \sqrt {n'} \rceil$ and $
+q=\lceil n'/p\rceil,$ so that $n \le n' \le 2n-1$ and $p\simeq q
+\simeq \sqrt{n}$.  For baby steps, we compute the polynomials $T_i=T^i
+\bmod R$, which have degree at most $mn-1$; we write $T_i = \sum_{0
+  \le j < n} T'_{i,j} z^{jm}$, with $T'_{i,j}$ of degree less than
+$m$, and build the polynomial matrix $M_{T'}$ with entries $T'_{i,j}$.
+We define the matrix $M_H=[h_{iq+j}]_{0 \le i <p, 0 \le j < q}$
 containing the polynomials $h_\ell$ organized in a row-major fashion,
-and compute the product $M_V=M_H M_T$. We can then reconstitute
-polynomials from the rows of $M_V$, and conclude with giant steps,
+and compute the product $M_V=M_H M_T$. We can then construct
+polynomials from the rows of $M_V$, and conclude with giant steps
 using Horner's scheme.
 
 The previous discussion leads to Algorithm~\ref{algo:iso2}. Remark
@@ -1041,7 +1017,7 @@ that input {\em and} output are written on the monomial bases.
   Let $b \in k[x,y]/I$. Given the coefficients $\vb$ of $b$ in the
   basis $\bxi \otimes \bupsilon=(x^i y^j)_{0 \le i < m, 0 \le j < n}$,
   {\sf Phi2}$(\vb)$ computes the coefficients of $\Phi(b)$ in the
-  basis $\bzeta=(z^i)_{0 \le i < mn}$ using $O(\M(mn)n^{1/2}+\M(m)
+  basis $\bzeta=(z^i)_{0 \le i < mn}$ in $O(\M(mn)n^{1/2}+\M(m)
   n^{(\omega+1)/2} )$ operations in~$k$.
 \end{Lemma}
 \begin{proof}
@@ -1072,7 +1048,7 @@ Lemma~\ref{lemma:tiso2}.
   Let $a\in k[z]/\ang{R}$. Given the coefficients $\va$ of $a$ in the
   basis $\bzeta^\ast$, {\sf InversePhi2}$(\va)$ computes the
   coefficients of $\Phi^{-1}(a)$ in the basis $\bxi^\ast \otimes
-  \bupsilon^\ast$ using $O(\M(mn)n^{1/2}+\M(m) n^{(\omega+1)/2} )$
+  \bupsilon^\ast$ in $O(\M(mn)n^{1/2}+\M(m) n^{(\omega+1)/2} )$
   operations in~$k$.
 \end{Lemma}
 
@@ -1088,15 +1064,15 @@ Lemma~\ref{lemma:tiso2}.
 In this section, we explain how the algorithms of
 Section~\ref{sec:emb-iso} can be used in order to construct and work
 in arbitrary extensions of $\F_p$, when used in conjunction with
-algorithms for defining {\em $\ell$-adic towers} over $\F_p$. Space
+algorithms for  {\em $\ell$-adic towers} over $\F_p$. Space
 constraints prevent us from giving detailed algorithms, so we only
-outline the construction. We will reuse freely definitions given in
-the introduction relative to $\ell$-adic towers: polynomials
-$T_{\ell,i}$, $Q_{\ell,i}$ and $Q_{\ell,i,j-i}$ and fields
+outline the construction. We reuse definitions given in the
+introduction relative to $\ell$-adic towers: polynomials $T_{\ell,i}$,
+$Q_{\ell,i}$ and $Q_{\ell,i,j-i}$ and fields
 $\K_{\ell^i}=\F_p[x_1,\dots,x_i]/\langle
 T_{\ell,1},\dots,T_{\ell,i}\rangle$; we also assume that algorithms
-for embeddings or change of basis in the $\ell$-adic towers are
-available.
+for embeddings or change of basis in $\ell$-adic towers are
+available (as in~\cite{DeDoSc13} and references therein).
 
 \smallskip\noindent{{\bf \rm Setup.}} For $\ell$ prime and $i \ge 1$,
 the residue class of $x_i$ in $\K_{\ell^i}$ will be written
@@ -1121,8 +1097,8 @@ Take $x_{\ell^{e}}$ in $\K$, with $\ell$ prime. By construction, its
 minimal polynomial over $\F_p$ is $Q_{\ell,e}$, irreducible of degree
 $\ell^{e}$ in (say) $\F_p[z]$. Next, consider a term $x_m$, with
 $m=\ell_1^{e_1}\cdots \ell_r^{e_r}$, with $\ell_i$'s pairwise distinct
-primes. This term equals $x_{\ell_1^{e_1}} \cdots x_{\ell_r^{e_r}}$,
-so it is a root of the composed product $Q_{m}=Q_{\ell_1,e_1} \odot \cdots
+primes. It equals $x_{\ell_1^{e_1}} \cdots x_{\ell_r^{e_r}}$,
+so it cancels the composed product $Q_{m}=Q_{\ell_1,e_1} \odot \cdots
 \odot Q_{\ell_r,e_r}.$ In Section~\ref{sec:emb-iso}, we pointed out
 that $Q_m$ is irreducible of degree $m=\ell_1^{e_1}\cdots
 \ell_r^{e_r}$ in $\F_p[z]$, so it must be the minimal polynomial of
@@ -1134,15 +1110,15 @@ Note that this process of constructing irreducible polynomials over
 $\F_p$ is already in~\cite{Shoup90,shoup94,couveignes+lercier11}.
 
 \smallskip\noindent{{\bf \rm Embedding and change of basis.}}
-Consider a sequence $d=(d_1,\dots,d_s)$ of positive integers, and let
-$m=d_1 \cdots d_s$. The set
-$$B_d = \{ x_{d_1}^{e_1} x_{d_1 d_2}^{e_2} \cdots x_{d_1 \cdots
-  d_s}^{e_s} \mid 0 \le e_i < d_i \text{~for all $i$}\}$$ is a basis
-of $\F_p(x_m)$. Important examples are sequences of the form $d=(d_1)$,
-with thus $m=d_1$, for which $B_d$ is the univariate basis $(x_m^i)_{0
-  \le i < m}$. Also useful for us are sequences $d=(d_1,d_2)$; letting
-$n=d_1$ and $m=d_1 d_2$, $B_d$ is the bivariate basis $(x_n^i
-x_m^j)_{0 \le i < n, 0 \le j < m/n}$.
+Consider a sequence $e=(e_1,\dots,e_t)$ of positive integers, and let
+$n=e_1 \cdots e_t$. The set
+$$B_e = \{ x_{e_1}^{a_1} x_{e_1 e_2}^{a_2} \cdots x_{e_1 \cdots
+  e_t}^{a_t} \mid 0 \le a_i < e_i \text{~for all $i$}\}$$ is a basis
+of $\F_p(x_n)$. Important examples are sequences of the form $e=(e_1)$,
+with thus $n=e_1$, for which $B_e$ is the univariate basis $(x_n^i)_{0
+  \le i < n}$. Also useful for us are sequences $e=(e_1,e_2)$; letting
+$m=e_1$ and $n=e_1 e_2$, $B_e$ is the bivariate basis $(x_m^i
+x_n^j)_{0 \le i < m, 0 \le j < n/m}$.
 
 Consider sequences $d=(d_1,\dots,d_s)$ and $e=(e_1,\dots,e_t)$, with
 $m=d_1 \cdots d_s$ and $n=e_1 \cdots e_t$, and suppose that $m$
@@ -1201,6 +1177,7 @@ polynomials of arbitrary elements of $\F_{p^{mn}}$ over $\F_{p^m}$.
 \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{creat}
+  \vspace{-6ex}
   \caption{Timings in seconds, $p=5$, $n=m+1$}
   \label{fig:bench}
 \vspace{-4ex}
@@ -1260,7 +1237,8 @@ between them happens around $m=70$.
 \begin{figure}
   \centering
   \includegraphics[width=0.5\textwidth]{magma}
-  \caption{Magma timings in seconds, $p=5$, $n=m+1$}
+  \vspace{-6ex}
+\caption{Magma timings in seconds, $p=5$, $n=m+1$}
   \label{fig:magma}
 \vspace{-4ex}
 \end{figure}
@@ -1269,23 +1247,24 @@ We compare our implementation to four different strategies available
 in Magma. For each of them we measure the time to construct the finite
 fields and embedding data, as well as the time to do operations
 equivalent to {\sf Embed}, resp.\ inverse
-isomorphism. Figure~\ref{fig:magma} reports on the following
-experiments:
-\begin{itemize}
-\item In {\sf irred}, we supply directly $P$, $Q$ and $R$ to Magma's
+isomorphism. 
+
+Figure~\ref{fig:magma} reports on the following experiments.
+In {\sf irred}, we supply directly $P$, $Q$ and $R$ to Magma's
   finite field constructor, then we call the \verb+Embed+ routine to
   compute the embedding data.
-\item In  {\sf P R}, we use Magma's default constructor to compute $P$
+ In  {\sf P R}, we use Magma's default constructor to compute $P$
   and $R$ (Magma chooses its own polynomials), then we call the
   \verb+Embed+ routine to compute the embedding.
-\item In {\sf P Q}, we use Magma's default constructor to compute $P$
+ In {\sf P Q}, we use Magma's default constructor to compute $P$
   and $Q$ (Magma chooses its own polynomials), then use the
   \verb+CommonOverfield+ routine to compute $R$, then \verb+Embed+ to
   compute the embedding data.
-\item In {\sf ext}, we use Magma's default constructor to compute $P$,
+ In {\sf ext}, we use Magma's default constructor to compute $P$,
   then the \verb+ext+ operator to compute an extension of degree $n$
   of $\F_p[x]/\ang{P}$ (Magma chooses its own polynomials).
-\end{itemize}
+
+
 Timings for constructing the extension and the embedding vary from one
 method to the other; once this is done, timings for applying
 embeddings or (inverse) isomorphisms are the same across these
