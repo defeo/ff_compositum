@@ -206,7 +206,7 @@ Suppose that for any prime $\ell$, an {\em $\ell$-adic tower} over
 $\F_p$ is available. By this, we mean a family of polynomials
 $(T_{\ell,i})_{i \ge 1}$, with $T_{\ell,i} \in \F_p[x_1,\dots,x_i]$,
 monic of degree $\ell$ in $x_i$, such that for all $i$ the ideal
-$\ang{T_{\ell,1},\dots,T_{\ell,i}}$ is prime in $\F_p[x_1,\dots,x_i]$.
+$\ang{T_{\ell,1},\dots,T_{\ell,i}}$ is maximal in $\F_p[x_1,\dots,x_i]$.
 Our model of the field with $p^{\ell^i}$ elements could then
 be
 $\K_{\ell^i}=\F_p[x_1,\dots,x_i]/\ang{T_{\ell,1},\dots,T_{\ell,i}}$,
@@ -373,10 +373,10 @@ M^t v$~\cite[Ch.~13]{burgisser+clausen-shokrollahi}.
 
 Following~\cite{df+thesis}, we give here a more abstract presentation
 of the transposition principle, using the algebraic theory of duality
-(see~\cite[Ch.~IX.1.8]{BourbakiAlgCom9}). The added level abstraction
+(see~\cite[Ch.~IX.1.8]{BourbakiAlgCom9}). The added level of abstraction
 will pay off by greatly simplifying the proofs of the next sections.
 
-Let $E$ and $F$ be $k$-vector spaces, with $\dim(E)=\dim(F) < \infty$,
+Let $E$ and $F$ be $k$-vector spaces, with $\dim(E)=\dim(F)$,
 and suppose that $\ang{.,.}: E\times F \to k$ is a non-degenerate
 bilinear form.  Then, to any vector space basis $\bxi=(\xi_i)_i$ of
 $E$, we can associate a unique \emph{dual basis}
@@ -456,9 +456,9 @@ Lastly, the reversal operator on $k[x]_m$ is its own transpose.
 
 \section{Trace and duality}\label{sec:trace}\label{ssec:conversions}\label{sec:trace-formulas}
 
-Next, we discuss some classical facts about the trace from, and give
+Next, we discuss some classical facts about the trace form, and give
 algorithms to change between monomial bases and their duals. In all
-this section, $k$ is a perfect field. General reference for the
+this section, $k$ is a perfect field. General references for the
 following are~\cite{Kunz86,Cox-Little-OShea:UAG2005}.
 
 \smallskip\noindent{{\bf \rm Traces in reduced algebras.}} 
@@ -514,7 +514,7 @@ output are vectors (written in {\sf sans serif} font).
 
 \begin{algorithm_noendline}
 {MonomialToDual$(\va,P)$}
-{$\va=(a_i)_{0 \le i < m} \in k^m$ \\  $P$ monic squarefree in $k[x]$ of degree $m$}
+{$\va=(a_i)_{0 \le i < m} \in k^m$, \\  $P$ monic squarefree in $k[x]$ of degree $m$}
 {$(\tau_P(a x^i))_{0 \le i < m}$, with $a=\sum_{0 \le i < m} a_i x^i$}
 {algo:minpolytotrace}
 \item $T = 1/\rev(P, m+1) \bmod x^m$
@@ -524,7 +524,7 @@ output are vectors (written in {\sf sans serif} font).
 
 \begin{algorithm_endline}
 {DualToMonomial$(\vb, P)$}
-{$\vb=(b_i)_{0 \le i < m} \in k^m$\\ $P$ monic squarefree in $k[x]$ of degree $m$}
+{$\vb=(b_i)_{0 \le i < m} \in k^m$,\\ $P$ monic squarefree in $k[x]$ of degree $m$}
 {$(a_i)_{0 \le i < m}$ such that $\tau_P(\sum_{0 \le i < m} a_i x^{i+j}) = b_j$ for all $j$}
 {algo:tracetopoly}
 \item $S = 1/P' \bmod P$
@@ -536,7 +536,7 @@ output are vectors (written in {\sf sans serif} font).
 
 \begin{Lemma}\label{lemma:uniconv}
   Algorithms~\ref{algo:minpolytotrace} and~\ref{algo:tracetopoly} are
-  correct. The former uses $O(\M(m))$ operations in $k$, and the
+  correct. The former uses $O(\M(m))$ operations in $k$, the
   latter $O(\M(m)\log(m))$.  If the polynomial $S=1/P' \bmod P$ is
   known, the running time of Algorithm~\ref{algo:tracetopoly} drops to
   $O(\M(m))$.
@@ -1277,7 +1277,10 @@ embeddings or isomorphisms extremely fast; in our case, one may do the
 same, using our algorithms to compute the matrices of $\Phi$ and
 $\Phi^{-1}$, when precomputation time and memory are not a concern.
 
-
+%\smallskip
+\noindent{\bf Aknowledgements.} We would like to thank the referees
+for their insightful remarks. Part of this work was financed by NSERC,
+the CRC program and the ANR project ECLIPSES (ANR-09-VERS-018).
 
 \scriptsize
 \bibliographystyle{plain} \bibliography{defeo}
