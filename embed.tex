@@ -376,7 +376,7 @@ of the transposition principle, using the algebraic theory of duality
 (see~\cite[Ch.~IX.1.8]{BourbakiAlgCom9}). The added level of abstraction
 will pay off by greatly simplifying the proofs of the next sections.
 
-Let $E$ and $F$ be $k$-vector spaces, with $\dim(E)=\dim(F)$,
+Let $E$ and $F$ be $k$-vector spaces, with $\dim(E)=\dim(F)<\infty$,
 and suppose that $\ang{.,.}: E\times F \to k$ is a non-degenerate
 bilinear form.  Then, to any vector space basis $\bxi=(\xi_i)_i$ of
 $E$, we can associate a unique \emph{dual basis}
@@ -392,7 +392,7 @@ non-degenerate. This is indeed the canonical example, and any
 non-degenerate form, is isomorphic to this one. We will see in the
 next section another family of examples, with $E=F$.
 
-Let $E',F'$ be two further vector spaces, with $\dim(E')=\dim(F')$ and
+Let $E',F'$ be two further vector spaces, with $\dim(E')=\dim(F')<\infty$ and
 let $\ang{.,.}'$ be a bilinear form $E'\times F' \to k$. Then, to
 any linear mapping $u:E\to E'$, one associates its {\em dual}
 (with respect to $\ang{.,.}$ and $\ang{.,.}'$), which is a linear
@@ -410,7 +410,7 @@ transposition principle is an algorithmic technique that, given an
 algorithm to compute $u: E \to E'$ in the bases $(\bxi,\bupsilon)$,
 yields an algorithm for the dual map $u^t: F' \to F$ in the bases
 $(\bupsilon^\ast,\bxi^\ast)$. The two algorithms have same cost, up to
-$O(\dim E+\dim E')$. In a nutshell, starting from an algorithm relying
+$O(\dim(E)+\dim(E'))$. In a nutshell, starting from an algorithm relying
 on a few basic operations (such as polynomial or matrix
 multiplication), its transpose is obtained by transposing each basic
 subroutine, then reversing their order.
@@ -580,6 +580,7 @@ dimension $mn$ of $A$.
 The following easy lemma will help us exhibit the duality
 relationships between these bases; it follows from the fact that $A$
 is the tensor product of $k[x]/\ang{P}$ and $k[y]/\ang{Q}$.
+
 \begin{Lemma}
   \label{lemma:traces:PQR1}
   Let $b$ be in $k[x]/\ang{P}$ and $c$ in $k[y]/\ang{Q}$. Then we have
@@ -676,6 +677,7 @@ restriction of $\Phi$ to the set $$\Pi= \{bc \,\mid\, b\in
 k[x]/\ang{P},\ c\in k[y]/\ang{Q}\} \subset k[x,y]/\ang{P,Q}.$$ We
 will use the following lemma, which results from the base independence
 of the trace (the second equality is Lemma~\ref{lemma:traces:PQR1}).
+
 \begin{Lemma}
   \label{lemma:traces:PQR}
   Let $b$ be in $k[x]/\ang{P}$ and $c$ in $k[y]/\ang{Q}$. Then we have
@@ -719,7 +721,7 @@ bases.
   %%   &=&  \bigl(\tau_R(\Phi(bc) z^i))\bigr)_{i<r},
   %% \end{eqnarray*}
 $$ \bigl(\tau_P(bx^i)\tau_Q(cy^i)\bigr)_{i<r} = \bigl(\tau_R(\Phi(bc)
-  z^i))\bigr)_{i<r};$$ for $r=mn$, this is indeed the representation
+  z^i))\bigr)_{i<r}.$$ For $r=mn$, this is indeed the representation
   of $\Phi(bc)$ on the dual basis $\bzeta^\ast$ of $k[z]/\ang{R}$. The
   cost of the calls to $\rem^t$ is in Section~\ref{ssec:duality}; the
   last step takes $r$ multiplications in~$k$.
@@ -867,7 +869,7 @@ Let $b$ be in $k[x,y]/I$ and let $a=\Phi(b)$. Writing $b=\sum_{0 \le i
   < m} b_i x^i$, with all $b_i$ in $k[y]/\ang{Q}$, we obtain a
 straightforward algorithm to compute $a$: compute all $\Phi(b_i x^i)$
 using {\sf Embed}, then sum. Since {\sf Embed} takes its inputs
-written on the dual bases, the following algorithm requires all $b_i$
+written on the dual bases, the algorithm requires that all $b_i$
 be written on the dual basis of $k[y]/\ang{Q}$ (equivalently, the
 input is given on the basis $\bxi \otimes \bupsilon^\ast$ of $A$). We
 also use the fact that the expression of $x^i$ on the dual
@@ -1070,7 +1072,7 @@ outline the construction. We reuse definitions given in the
 introduction relative to $\ell$-adic towers: polynomials $T_{\ell,i}$,
 $Q_{\ell,i}$ and $Q_{\ell,i,j-i}$ and fields
 $\K_{\ell^i}=\F_p[x_1,\dots,x_i]/\langle
-T_{\ell,1},\dots,T_{\ell,i}\rangle$; we also assume that algorithms
+T_{\ell,1},\dots,T_{\ell,i}\rangle$. We also assume that algorithms
 for embeddings or change of basis in $\ell$-adic towers are
 available (as in~\cite{DeDoSc13} and references therein).
 
@@ -1098,7 +1100,7 @@ minimal polynomial over $\F_p$ is $Q_{\ell,e}$, irreducible of degree
 $\ell^{e}$ in (say) $\F_p[z]$. Next, consider a term $x_m$, with
 $m=\ell_1^{e_1}\cdots \ell_r^{e_r}$, with $\ell_i$'s pairwise distinct
 primes. It equals $x_{\ell_1^{e_1}} \cdots x_{\ell_r^{e_r}}$,
-so it cancels the composed product $Q_{m}=Q_{\ell_1,e_1} \odot \cdots
+so it is a root of the composed product $Q_{m}=Q_{\ell_1,e_1} \odot \cdots
 \odot Q_{\ell_r,e_r}.$ In Section~\ref{sec:emb-iso}, we pointed out
 that $Q_m$ is irreducible of degree $m=\ell_1^{e_1}\cdots
 \ell_r^{e_r}$ in $\F_p[z]$, so it must be the minimal polynomial of
