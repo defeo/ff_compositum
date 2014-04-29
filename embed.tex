@@ -943,14 +943,14 @@ let us write
 \begin{eqnarray*}
 b&=&\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^j
 =~\sum_{i=0}^{m-1}\sum_{j=0}^{n-1} b_{i,j}x^i y^i y^{j-i}\\
-&=&\sum_{\ell=-m+1}^{n-1}\sum_{i=0}^{m-1} b_{i,i+\ell}(xy)^i y^\ell
-=~\frac{1}{y^{m-1}} \sum_{\ell=0}^{m+n-2} h_\ell(xy) y^\ell,
+&=&\sum_{h=-m+1}^{n-1}\sum_{i=0}^{m-1} b_{i,i+h}(xy)^i y^h
+=~\frac{1}{y^{m-1}} \sum_{h=0}^{m+n-2} c_h(xy) y^h,
 \end{eqnarray*}
-with $h_\ell(z)=\sum_{0 \le i < m} b_{i,i+\ell-m+1} z^i$ for all
-$\ell$ (undefined indices are set to zero). Hence $a=\Phi(b)$ has the
+with $c_h(z)=\sum_{0 \le i < m} b_{i,i+h-m+1} z^i$ for all
+$h$ (undefined indices are set to zero). Hence $a=\Phi(b)$ has the
 form
 $$a = \frac{1}{T^{m-1}}\widetilde{a} \mod R\quad\text{with}\quad
-\widetilde{a}=\sum_{\ell=0}^{m+n-2} h_\ell T^\ell,$$ where
+\widetilde{a}=\sum_{h=0}^{m+n-2} c_h T^h,$$ where
 $T=\Phi(y)$.  We use baby steps / giant steps techniques
 from~\cite{LeMeSc13} (inspired by Brent and Kung's algorithm) to
 compute $a$, reducing the problem to polynomial matrix
@@ -960,9 +960,9 @@ q=\lceil n'/p\rceil,$ so that $n \le n' \le 2n-1$ and $p\simeq q
 \bmod R$, which have degree at most $mn-1$; we write $T_i = \sum_{0
   \le j < n} T'_{i,j} z^{jm}$, with $T'_{i,j}$ of degree less than
 $m$, and build the polynomial matrix $M_{T'}$ with entries $T'_{i,j}$.
-We define the matrix $M_H=[h_{iq+j}]_{0 \le i <p, 0 \le j < q}$
-containing the polynomials $h_\ell$ organized in a row-major fashion,
-and compute the product $M_V=M_H M_T$. We can then construct
+We define the matrix $M_C=[c_{iq+j}]_{0 \le i <p, 0 \le j < q}$
+containing the polynomials $c_h$ organized in a row-major fashion,
+and compute the product $M_V=M_C M_T$. We can then construct
 polynomials from the rows of $M_V$, and conclude with giant steps
 using Horner's scheme.
 
@@ -981,8 +981,8 @@ that input {\em and} output are written on the monomial bases.
 \item \label{iso2:3} $U=1/T \bmod R$
 \item \label{iso2:4} $T'=[T^i \bmod R]_{0 \le i \le q}$
 \item $M_{T'}=[T'_{i,j}]_{0\le i < q, 0, \le j < n}$ \hfill $T'_{i,j}$ are defined in the text
-\item $M_H=[h_{iq+j}]_{0 \le i <p, 0 \le j < q}$ \hfill $h_\ell$ are defined in the text
-\item \label{iso2:7} $M_V = M_H M_{T'}$
+\item $M_C=[c_{iq+j}]_{0 \le i <p, 0 \le j < q}$ \hfill $c_h$ are defined in the text
+\item \label{iso2:7} $M_V = M_C M_{T'}$
 \item $V=[\sum_{0 \le j <n} {M_V}_{i,j} z^{jm} ]_{0 \le i <p}$
 \item $V'=[V_i \bmod R]_{0 \le i <p}$
 \item $a=0$
@@ -1008,9 +1008,9 @@ that input {\em and} output are written on the monomial bases.
 \item \hspace{7mm} $\va = \mulmod^t(\va,T'_q,R)$
 \item $V = [\rem^t(V'_i,R,mn+m-1)]_{0 \le i < p}$
 \item $M_V = [(V_{i})_{jm,\dots,jm+2m-1}]_{0 \le i < p, 0 \le j < n}$
-\item\label{step:tmatmul} $M_H = \mul^t(M_V, M_{T'},m-1,m)$
-\item $h=[{M_H}_{0,0},\dots,{M_H}_{0,q-1},\dots,{M_H}_{p-1,q-1}]$
-\item {\bf return} $[\coeff(h_{i-j+m-1},i)]_{0 \le i < m, 0 \le j < n}$
+\item\label{step:tmatmul} $M_C = \mul^t(M_V, M_{T'},m-1,m)$
+\item $c=[{M_C}_{0,0},\dots,{M_C}_{0,q-1},\dots,{M_C}_{p-1,q-1}]$
+\item {\bf return} $[\coeff(c_{i-j+m-1},i)]_{0 \le i < m, 0 \le j < n}$
   \end{algorithm_endline}
 \vspace{-5ex}
 \end{algofloat}
