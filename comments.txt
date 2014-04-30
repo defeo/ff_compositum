@@ -1,0 +1,12 @@
+Comments to the PC
+==================
+
+This new version of "Fast arithmetic for the algebraic closure of
+finite fields" integrates all the remarks made by the two referees,
+plus some minor typographic and stylistic corrections.
+
+One major change is the reorganization of part of Sections 2
+and 3. Notation hasn't changed, and the main results are stated
+exactly as before. However, we felt that a change in the order in
+which these preliminary results are presented was needed to improve
+clarity and synthesis. 
