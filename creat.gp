@@ -8,7 +8,7 @@ set lmargin 0
 
 set multiplot 
 
-set size 0.425,1
+set size 0.41,1
 set origin 0.07,0
 #set ylabel "seconds"
 set xlabel "m"
@@ -22,8 +22,8 @@ plot [0:190][0:0.08] 'bench.dat' index 1 using 1:2 with line lt 1 lw 3 title "R"
 
 
 unset ylabel
-set size 0.425,1
-set origin 0.55,0
+set size 0.41,1
+set origin 0.54,0
 plot [0:190][0:3] 'bench.dat' index 1 using 1:2 with line lt 1 lw 3 title "R",\
 'bench.dat' index 1 using 1:10 with line lt 8 lw 3 title "Phi1",\
 'bench.dat' index 1 using 1:11 with line lt 9 lw 3 title "Phi2"
