@@ -1,0 +1,375 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Fast Arithmetic for the Algebraic Closure of Finite Fields</title>
+    
+    <meta name="description" 
+	  content="Fast Arithmetic for the Algebraic
+		   Closure of Finite Fields. Presented at ISSAC 2014, Kobe, Japan" />
+    <meta name="author" content="Luca De Feo" />
+  
+    <link href="talk.css" rel="stylesheet" />
+  </head>
+  <body class="impress-not-supported">
+    <div class="fallback-message">
+      <p>This presentation
+	uses <a href="https://github.com/bartaz/impress.js/">impress.js</a>,
+	a fairly recent technology which is not supported by your
+	configuration.</p>
+      <p>Please update your browser and/or activate JavaScript.</p>
+    </div>
+
+    <div id="impress">
+
+      <!-- Title slide -->
+      <div id="title" class="step before now" data-rotate-x="90" data-scale="0.2">
+	<h1>Fast Arithmetic for the Algebraic Closure of Finite Fields</h1>
+	<h3><a href="http://defeo.lu"><i>Luca De Feo</i></a>, Javad
+	  Doliskani and <a href="http://www.csd.uwo.ca/~eschost">Éric
+	    Schost</a></h3>
+      </div>
+
+      <!-- Long sequence to show the F_p-lattice step by step -->
+      <div id="Fp" class="step" data-y="0" data-scale="0.2">
+	<p class="centered" style="margin-top: 10em">Consider a finite field with <i>p</i>
+	  elements</p>
+      </div>
+
+      <div id="Fp-1" class="step" data-y="0">
+	<div class="centered">
+	<math><mrow><msub>
+	      <mrow><mi>𝔽</mi></mrow>
+	      <mrow><mi fontstyle="italic">p</mi></mrow>
+	</msub></mrow></math>
+	</div>
+      </div>
+
+      <div id="Fp-2" class="step" data-y="-140">
+	<div class="abs now then" style="left:580px">Fp2</div>
+      </div>
+
+      <div id="Fp-3" class="step panel" data-y="-300">
+	<div class="abs now then" style="left:700px;bottom:300px">Fp4</div>
+	<div class="abs now then" style="left:850px;bottom:450px">Fp(2)</div>
+      </div>
+
+      <div id="Fp-4" class="step panel" data-y="-300">
+	<div class="abs now then" style="left:400px;bottom:175px">Fp3</div>
+	<div class="abs now then" style="left:300px;bottom:300px">Fp(3)</div>
+	<div class="abs now then" style="left:300px;bottom:100px">Fpℓ</div>
+	<div class="abs now then" style="left:100px;bottom:200px">Fp(ℓ)</div>
+      </div>
+
+      <div id="Fp-6" class="step panel" data-y="-300">
+	<div class="abs now then" style="left:300px;top:100px">Fpbar=⨂Fp(ℓ)</div>
+      </div>
+
+      <!-- Let's move on -->
+      <div id="past-work" class="step" data-y="1024">
+	<h4>Past work on <span class="inlinemath">$\ell$</span>-adic towers</h4>
+
+	<p style="float:right;width:300px">
+	  <strong>Goal:</strong> all
+	  operations <strong>quasi-linear</strong> in data size.
+	</p>
+
+	<dl style="width:550px;padding-right:50px;border-right: solid 2px black;border-radius:50px;">
+	  <dd>$\ell=2$:</dd><dt>Doliskani & Schost 2012;</dt>
+	  <dd>$\ell = p$:</dd><dt> De Feo & Schost 2009;</dt>
+	  <dd>$\ell$ <em>small</em>:</dd><dt>De Feo, Doliskani & Schost 2013;</dt>
+	</dl>
+
+	<h4>How to glue the towers together?</h4>
+	<ul>
+	  <li>Different techniques for different $\ell$<br/>
+	    ⟶ no natural framework to combine them.</li>
+	  <li>Need a <em>generic</em> solution.</li>
+	</ul>
+
+	<h4>This work: <em>Composita of fields</em></h4>
+	<ul>
+	  <li>$k$ a field (say finite, but not necessarily),</li>
+	  <li>$n, m$ coprime integers.</li>
+	</ul>
+      </div>
+
+      <div id="this-work" class="step" data-y="1612">
+	<div class="abs centered" style="left:512px;top:-120px">
+	  <span class="abs before now centered">$C$</span>
+	  <span class="abs then centered">$k[X,Y]/(P,Q) \simeq k[Z]/(R)$</span>
+	</div>
+	<div class="abs centered" style="left:312px;top:0px">
+ 	  <span class="abs before now centered">$A$</span>
+ 	  <span class="abs then centered">$k[X]/(P)$</span>
+	</div>
+	<div class="abs centered" style="left:712px;top:0px">
+	  <span class="abs before now centered">$B$</span>
+	  <span class="abs then centered">$k[Y]/(Q)$</span>
+	</div>
+	<div class="abs centered" style="left:512px;top:120px">$k$</div>
+      </div>
+
+      <div id="repr" class="step panel" data-y="1812">
+	<div class="abs" style="top:270px">
+	  <h5>Representation</h5>
+	  <ul>
+	    <li>Let $P, Q$ be irreducible polynomials,</li>
+	    <li>$\deg P = m,$ $\deg Q = m,$ <span class="now then">$\deg R = mn$</span></li>
+	    <li class="now then">What choice for $R$?</li>
+	  </ul>
+
+	  <h5 class="now then">Operations</h5>
+	  <ul class="now then">
+	    <li>Embed: $k[X]/(P) \hookrightarrow K[Z]/(R)$.</li>
+	    <li>Project: $K[Z]/(R) \twoheadrightarrow K[X]/(P)$ (in
+	      particular Embed<sup>-1</sup>).</li>
+	    <li>Isomorphism: $K[Z]/(R) \longleftrightarrow K[X,Y]/(P,Q)$ (both ways).</li>
+	  </ul>
+	</div>
+      </div>
+
+      <div id="results" class="step" data-y="2580">
+	<h2>Results</h2>
+	<h5>Target complexity: $\tilde{O}(mn)$</h5>
+
+	<table class="centered" style="width:100%;margin-top:1em;">
+	  <tr>
+	    <th>Embeding</th><th>Projection</th><th>Isomorphism</th>
+	  </tr>
+	  <tr>
+	    <td><p><i class="check"></i></p></td>
+	    <td><p><i class="check"></i></p></td>
+	    <td>
+	      <p><i class="fail"></i></p>
+	      <ol style="text-align: left;display:inline-block">
+		<li>$\tilde{O}(m^2n)$</li>
+		<li>$\tilde{O}(mn^{(ω+1)/2})$</li>
+	      </ol>
+	    </td>
+	  </tr>
+	</table>
+      </div>
+
+      <div id="techniques" class="step" data-x="1100" data-y="1612">
+	<h2 style="font-weight:bold">Techniques</h2>
+	<ul>
+	  <li>Composed product,</li>
+	  <li>Transposed algorithms and dual bases.</li>
+	</ul>
+      </div>
+      
+      <div id="compprod-trans" class="step" data-x="0" data-y="1612">
+      </div>
+
+      <div id="compprod" class="step now then" data-x="0" data-y="1580" data-scale="0.1">
+	<h3>What $R$?</h3>
+	
+	<p>We need a <em>good</em> $R$, defining $K[Z]/(R) \simeq K[X,Y]/(P,Q)$.</p>
+
+	<p>Let</p>
+	<ul>
+	  <li>$x$ root of $P$</li>
+	  <li>$y$ root of $Q$</li>
+	</ul>
+
+	<h6>There are two <em>obvious choices</em> for $R$:</h6>
+	<ul>
+	  <li>Minimal polynomial of $x+y$ <span class="push-right">⟶ Composed sum</span></li>
+	  <li>Minimal polynomial of $xy$ <span id="cprod" class="push-right">⟶ Composed product</span></li>
+	</ul>
+
+	<h6>Classic algorithms ([])</h6>
+	<dl>
+	  <dd>In:</dd><dt>$P,Q$</dt>
+	  <dd>Out:</dd><dt>$R$ composed product/sum</dt>
+	</dl>
+	<p>Complexity: $\tilde{O}(mn)$ (Newton sums)</p>
+      </div>
+
+      <div id="compprod-zoom" class="step" data-x="30" data-y="1588" data-scale="0.04">
+      </div>
+
+      <!------------>
+
+      <div id="dual-trans" class="step" data-x="1100" data-y="1612">
+      </div>
+
+      <div id="modred" class="step" data-x="1100" data-y="2100">
+	<p>Consider this naive algorithm to reduce modulo a fixed polynomial:</p>
+	<p class="spacer"></p>
+	<p class="centered">
+	  $5X^5 + 4X^4 + 3X^3 + 2X^2 + X \mod X^2 - X - 1$<br>
+	  ↓<br>
+	  <span class="horner">$X(X(X(X(X(5)+4)+3)+2)+1) \mod \dots$</span>
+	</p>
+      </div>
+
+      <div id="mod-circuit" class="step panel now then" data-x="1100" data-y="2450">
+        <div style="height:150px"></div>
+	<div id="lfsr-elm" style="width:60%"></div>
+
+	<pre><code>
+<b>INPUT:</b> <script type="math/tex">(c_i)_{i>0}</script>
+for <script type="math/tex">i \in [0,...)</script>
+    <script type="math/tex">τ</script>  =  <script type="math/tex">r_1</script>
+    <script type="math/tex">r_1</script> += <script type="math/tex">r_0</script>
+    <script type="math/tex">r_0</script> =  <script type="math/tex">c_i</script>
+    <script type="math/tex">r_0</script> += <script type="math/tex">τ</script>
+<b>OUTPUT:</b> <script type="math/tex">r_0, r_1</script>
+</code></pre>
+      </div>
+
+      <div id="lfsr" class="step panel now then" data-x="1100" data-y="2600" data-rotate="180">
+	<div id="lfsr-elm-trans" style="width:100%"></div>
+
+	<pre><code>
+<b>INPUT:</b> <script type="math/tex">r_0, r_1</script>
+for <script type="math/tex">i \in (...,0]</script>
+    <script type="math/tex">τ</script>  =  <script type="math/tex">r_0</script>
+    <script type="math/tex">c_i</script> =  <script type="math/tex">r_0</script>
+    <script type="math/tex">r_0</script> =  <script type="math/tex">r_1</script>
+    <script type="math/tex">r_1</script> +=  <script type="math/tex">τ</script>
+<b>OUTPUT:</b> <script type="math/tex">(c_i)_{i>0}</script>
+</code></pre>
+      </div>
+
+      <div id="lfsr-name" class="step now then panel" style="color:red"
+           data-x="1100" data-y="2600" data-rotate="180">
+        <h4 class="abs" style="left:250px;top:100px">Linear sequence extension</h4>
+
+        <h4 class="abs" style="right:250px;bottom:120px">Modular reduction</h4>
+      </div>
+
+      <!------------>
+
+      <div id="tmul-trans" class="step" data-x="1100" data-y="2190" data-scale="0.8">
+      </div>
+
+      <div id="tmul" class="step panel" data-x="2200" data-y="2190">
+        <h4>The transpose of modular multiplication</h4>
+
+        <p class="spacer"></p>
+        <p>Let</p>
+        <ul>
+          <li>$A,B,C$ polynomials, $\deg A,B < \deg C$,</li>
+          <li>Compute $AB \mod C$.
+        </ul>
+
+        <p class="spacer"></p>
+
+	<p class="centered">
+	  <span class="horner">$X(X(X(X(X(5B)+4B)+3B)+2B)+B) \mod C$</span>
+	</p>
+
+        <p class="spacer"></p>
+
+        <p>
+          <span class="push-right" style="width:40%;">What transposition? This function
+            is <strong>not even linear</strong>!</span>
+          <div id="mul-elm" style="width:60%"></div>
+        </p>
+      </div>
+
+      <div id="tmul-dual" class="step panel" data-x="2200" data-y="2600">
+        <div id="tmul-elm" class="abs" style="width:60%;bottom:0"></div>
+      </div>
+
+      <!--div id="talks" class="step" data-y="0" data-rotate-x="-90">
+	<h2>Thanks</h2>
+      </div-->
+
+      <div id="overview" class="step" data-x="1500" data-y="1500" data-scale="5">
+      </div>
+    </div>
+
+    <div>
+
+    <script src="impress.js/js/impress.js"></script>
+    <script>impress().init();</script>
+
+    <script src="elm/resources/elm-runtime.js"></script>
+    <script src="elm/build/lfsr.js"></script>
+    <script>
+      (function() {
+        var $ = document.querySelector.bind(document);
+        var lfsr = $('#lfsr-elm');
+        var elm = Elm.embed(Elm.LFSR, lfsr, {
+            interval : 2,
+            registers : [[0,1], [0,1]],
+            io : [5,4,3,2,1],
+            transpose : false,
+            animate : false,
+            mulregs : null,
+            mulin : ""
+        });
+        $('#mod-circuit').addEventListener('impress:stepenter', function() { 
+          elm.ports.animate.send(true);
+        });
+
+        var tlfsr = $('#lfsr-elm-trans');
+        var telm = Elm.embed(Elm.LFSR, tlfsr, {
+            interval : 2,
+            registers : [[1,1], [0,1]],
+            io : [0,0,0,0,0,0,0,0,0,0],
+            transpose : true,
+            animate : false,
+            mulregs : null,
+            mulin : ""
+        });
+        $('#lfsr').addEventListener('impress:stepenter', function() { 
+          telm.ports.animate.send(true);
+        });
+
+        $('#lfsr-name').addEventListener('impress:stepleave', function() { 
+          elm.ports.animate.send(false);
+          telm.ports.animate.send(false);
+        });
+
+        var mul = $('#mul-elm');
+        Elm.embed(Elm.LFSR, mul, {
+            interval : 0,
+            registers : [],
+            io : [],
+            transpose : false,
+            animate : false,
+            mulregs : [['','',0],['','',1],['B','Out',1],['','',0],['','',1]],
+            mulin : "A"
+        });
+
+        var tmul = $('#tmul-elm');
+        Elm.embed(Elm.LFSR, tmul, {
+            interval : 0,
+            registers : [],
+            io : [],
+            transpose : true,
+            animate : false,
+            mulregs : [['','',0],['','',1],['B','In',1],['','',0],['','',1]],
+            mulin : "??"
+        });
+
+      })();
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        config: ["MMLorHTML.js"],
+        jax: ["input/TeX","input/AsciiMath","output/HTML-CSS","output/NativeMML"],
+        extensions: ["MathMenu.js","MathZoom.js","tex2jax.js"],
+        tex2jax: {
+          inlineMath: [ ['$','$'] ]
+        },
+        TeX: {
+          extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"],
+          Macros: {
+           F: '{\\mathbb{F}}'
+          }
+        }
+      });
+    </script>
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
+  </body>
+</html>

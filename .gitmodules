@@ -1,0 +1,6 @@
+[submodule "talks/issac14/impress.js"]
+	path = talks/issac14/impress.js
+	url = https://github.com/bartaz/impress.js.git
+[submodule "talks/issac14/my-web-fonts"]
+	path = talks/issac14/my-web-fonts
+	url = https://github.com/defeo/my-web-fonts

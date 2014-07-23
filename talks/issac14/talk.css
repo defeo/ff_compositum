@@ -1,0 +1,169 @@
+@import '/my-web-fonts/stix.css';
+
+/* Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* Some base style */
+
+body {
+    font-family: "stix", serif;
+    font-size: 26pt;
+    line-height: 1.3;
+}
+
+code {
+    font-family: monospace;
+    line-height: 1.5;
+}
+
+a { 
+    color: blue;
+    text-decoration: none; 
+}
+a:hover, a:visited { color: blue }
+
+b, strong { font-weight: bold }
+i, em { font-style: italic }
+
+h1 { font-size: 200% }
+h2 { font-size: 150% }
+h3 { font-size: 130% }
+h4 { font-size: 120% }
+h5 { font-size: 110% }
+h4, h5, h6 { font-weight: bold }
+h2, h3, h4, h5, h6 { margin-top: 1em; }
+
+ul, ol { margin-left: 1.1em; }
+ul li { list-style-type: circle; }
+
+dd { display: inline; font-weight: bold; }
+dd:before { content: ""; display: block; }
+dt { display: inline; margin-left: 1em;}
+
+sup, sub {
+    font-size: 60%
+}
+
+.MathJax { margin: 0 1ex !important; }
+.inlinemath .MathJax { margin: 0 !important;}
+
+/* Hide the fallback message */
+.impress-supported .fallback-message { display: none }
+
+/* On with the presentation */
+
+.step {
+    position: relative;
+    width: 1024px;
+    box-sizing: border-box;
+    padding: 25px;
+    border: solid 0.1px #ddd;
+    border-radius: 10px;
+    cursor: url(laser.cur) 8 8, url(laser.png) 8 8, default;
+
+/*    opacity: 0.3;
+    -webkit-transition: opacity 1s;
+    -moz-transition:    opacity 1s;
+    -ms-transition:     opacity 1s;
+    -o-transition:      opacity 1s;
+    transition:         opacity 1s; */
+}
+
+.step.active {
+/*    opacity: 1; */
+}
+
+.before, .now, .then {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition:    opacity 0.5s;
+    -ms-transition:     opacity 0.5s;
+    -o-transition:      opacity 0.5s;
+    transition:         opacity 0.5s;
+}    
+.future .before, .present .now, .past .then,
+.future.before, .present.now, .past.then
+{ opacity : 1 }
+
+/* Some convenience classes */
+
+.centered {
+    margin: auto;
+    text-align: center;
+}
+.impress-supported .abs.centered {
+    transform: translate(-50%, -50%);
+}
+
+.impress-supported .abs {
+    position: absolute;
+}
+
+.push-right {
+    float: right;
+}
+
+.spacer {
+    height: 1em;
+}
+
+/* A panel takes up a full screen space, for overlays */
+.panel {
+    height: 768px;
+}
+
+#overview { display: none }
+.impress-on-overview .step { cursor: pointer; }
+
+
+/* Specific styles */
+#title { text-align: center; }
+#title a { color: inherit; } 
+
+.check:after {
+    color: #0f0;
+    font-size: 200%;
+    font-style: normal;
+    content: "✓" 
+}
+.fail:after {
+    color: #f00;
+    font-size: 200%;
+    font-style: italic;
+    content: "✕"
+}
+
+#techniques li {
+    font-size: 140%;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.impress-on-compprod-zoom #cprod {
+    font-weight: bold;
+    color: red;
+}
+
+.impress-on-tmul-trans .horner, 
+.impress-on-tmul .horner {
+    outline: solid thick red;
+}

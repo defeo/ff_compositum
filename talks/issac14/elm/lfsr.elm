@@ -1,12 +1,40 @@
+module LFSR where
+
 import Window
 import Text
 import Maybe
 import Debug
 import Time
+import Json
 
-main : Signal Element
-main = uncurry (tlfsr (transStyle <| toFloat 100))
-       <~ fibsig [(1,1),(0,1)] 10 (2*second)
+{- JS interaction and applet definition -}
+
+port interval : Float
+port registers : [(Int,Int)]
+port io : [Int]
+port transpose : Bool
+port animate : Signal Bool
+
+port mulregs : Maybe [(String, String, Int)]
+port mulin : String
+
+(style, signal) = case transpose of
+                   False -> (defaultStyle, modsig registers io)
+                   True -> (transStyle, fibsig registers (length io))
+
+main = case mulregs of
+         Nothing -> mainLFSR ~ Window.width
+         Just regs -> mainMul regs <~ Window.width
+
+mainLFSR : Signal (Int -> Element)
+mainLFSR = (\(r, i) w -> (tlfsr . style . toFloat <| w `div` (length registers + length io + 1)) r i)
+           <~ signal (keepWhen animate 0 <| every <| interval*second)
+
+mainMul : [(String, String, Int)] -> Int -> Element
+mainMul regs w = multiplier (style <| toFloat <| w `div` (length regs + 2)) regs [mulin]
+
+
+{- Circuit definitions -}
 
 data NodeType = Copy | Add
 type LFSRStyle = 
@@ -30,11 +58,11 @@ transStyle : Float -> LFSRStyle
 transStyle size = let s = defaultStyle size
                   in { s | nodetype <- Add, transpose <- reverse }
 
-tlfsr : LFSRStyle -> [(Int,Int)] -> [Int] -> Element
+tlfsr : LFSRStyle -> [(a,Int)] -> [b] -> Element
 tlfsr style regs io = let n = length regs
                           registers = flow right 
                                       (map
-                                       (\(r,_) -> (register style <| show r)) 
+                                       (\(r,_) -> (register style <| shownoquot r)) 
                                       regs)
                           iopipe = arrows style.line
                                    <| style.transpose [(style.size/2,0), (0,0)]
@@ -55,7 +83,7 @@ tlfsr style regs io = let n = length regs
                                  <| zip regs [0..length regs]
                           size = round style.size
                           input = centered . Text.style style.text 
-                                  <| toText <| join ", " <| map show io
+                                  <| toText <| join ", " <| map shownoquot io
                           width = toFloat (widthOf input) + style.size * toFloat (n+2)
                       in
                         collage 
@@ -71,7 +99,7 @@ tlfsr style regs io = let n = length regs
                            (toForm input)
                          ]
                         ]
-                             
+
 register : LFSRStyle -> String -> Element
 register style val = let size = round style.size 
                      in collage size size [
@@ -115,11 +143,39 @@ arrow style path = group [traced style path,
 arrows : LineStyle -> Path -> Form
 arrows style path = group (map (\(start, end) -> arrow style <| segment start end) (split path))
 
+{--- Multiplier circuit ---------}
+
+multiplier : LFSRStyle -> [(a,b,Int)] -> [c] -> Element
+multiplier style regs io = let lfsr = tlfsr style (map (\(a,b,t) -> (b,t)) regs) io
+                               scalars = flow right 
+                                         (map
+                                          (\(r,_,_) -> (scalar style <| shownoquot r)) 
+                                         regs)
+                               w = (toFloat (widthOf lfsr) - toFloat (length regs) * style.size) / 2
+                           in
+                             collage 
+                             (widthOf lfsr)
+                             (heightOf lfsr + 2 * round style.size)
+                             [ moveY (-style.size * 3/4) <| toForm lfsr
+                             , move (-w + style.size, style.size) <| toForm scalars]
+
+scalar : LFSRStyle -> String -> Element
+scalar style val = let size = round style.size 
+                   in collage size (2*size) 
+                      [ moveY (style.size/2)  <| toForm <| register style val
+                      , arrow style.line [(0,0),(0,-style.size)]]
+
+
+{---------- Helpers -------------}
+
 split : [a] -> [(a,a)]
 split list = case list of
                []             -> []
                [single]       -> []
                one::two::tail -> (one, two)::split(two::tail)
+
+shownoquot : a -> String
+shownoquot v = String.filter (\c -> c /= '"' && c /= '\'') <| show v {-"-}
 
 {----------- LOGIC -------------}
 
@@ -131,8 +187,23 @@ fibout : [(Int, Int)] -> [Int] -> ([(Int, Int)], [Int])
 fibout regs prev = let (nregs, out) = fibonacci regs
                    in (nregs, out :: prev)
 
-fibsig initial count freq = foldp
+fibsig : [(Int, Int)] -> Int -> Signal a -> Signal ([(Int, Int)], [Int])
+fibsig initial count sig = foldp
                             (\sig (regs, out) -> if count == 0 || count > length out
                                                  then fibout regs out
                                                  else (initial, []))
-                            (initial, []) (every freq)
+                            (initial, []) sig
+
+modred : [(Int, Int)] -> Int -> [(Int, Int)]
+modred regs input = let (out, tap) = head regs
+                    in fst <| foldl
+                           (\(a,b) (r,tap) -> (r ++ [(a+out*tap, tap)], b))
+                           ([], tap)
+                           ((tail regs) ++ [(input,0)])
+
+modsig : [(Int, Int)] -> [Int] -> Signal a -> Signal ([(Int, Int)], [Int])
+modsig initial initins sig = foldp
+                             (\sig (regs, ins) -> case ins of
+                                                    [] -> (initial, initins)
+                                                    hd::tail -> (modred regs hd, tail))
+                             (initial, initins) sig
