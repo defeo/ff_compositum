@@ -18,9 +18,9 @@ port animate : Signal Bool
 port mulregs : Maybe [(String, String, Int)]
 port mulin : String
 
-(style, signal) = case transpose of
-                   False -> (defaultStyle, modsig registers io)
-                   True -> (transStyle, fibsig registers (length io))
+(style, lfsrcolor, signal) = case transpose of
+                               False -> (defaultStyle, black, modsig registers io)
+                               True -> (transStyle, rgb 255 0 0, fibsig registers (length io))
 
 main = case mulregs of
          Nothing -> mainLFSR ~ Window.width
@@ -31,7 +31,8 @@ mainLFSR = (\(r, i) w -> (tlfsr . style . toFloat <| w `div` (length registers +
            <~ signal (keepWhen animate 0 <| every <| interval*second)
 
 mainMul : [(String, String, Int)] -> Int -> Element
-mainMul regs w = multiplier (style <| toFloat <| w `div` (length regs + 2)) regs [mulin]
+mainMul regs w = let width = toFloat <| w `div` (length regs + 2)
+                 in multiplier (style width) lfsrcolor regs [mulin]
 
 
 {- Circuit definitions -}
@@ -145,19 +146,28 @@ arrows style path = group (map (\(start, end) -> arrow style <| segment start en
 
 {--- Multiplier circuit ---------}
 
-multiplier : LFSRStyle -> [(a,b,Int)] -> [c] -> Element
-multiplier style regs io = let lfsr = tlfsr style (map (\(a,b,t) -> (b,t)) regs) io
-                               scalars = flow right 
-                                         (map
-                                          (\(r,_,_) -> (scalar style <| shownoquot r)) 
-                                         regs)
-                               w = (toFloat (widthOf lfsr) - toFloat (length regs) * style.size) / 2
-                           in
-                             collage 
-                             (widthOf lfsr)
-                             (heightOf lfsr + 2 * round style.size)
-                             [ moveY (-style.size * 3/4) <| toForm lfsr
-                             , move (-w + style.size, style.size) <| toForm scalars]
+multiplier : LFSRStyle -> Color -> [(a,b,Int)] -> [c] -> Element
+multiplier style lfsrcolor regs io = let line = style.line
+                                         text = style.text
+                                         lfsrstyle = { style | 
+                                                       line <- { line |
+                                                                 color <- lfsrcolor }, 
+                                                       text <- { text |
+                                                                 color <- lfsrcolor }
+                                                     }
+                                         lfsr = tlfsr lfsrstyle (map (\(a,b,t) -> (b,t)) regs) io
+                                         scalars = flow right 
+                                                   (map
+                                                    (\(r,_,_) -> (scalar style <| shownoquot r)) 
+                                                   regs)
+                                         w = (toFloat (widthOf lfsr) - 
+                                              toFloat (length regs) * style.size) / 2
+                                     in
+                                       collage 
+                                       (widthOf lfsr)
+                                       (heightOf lfsr + 2 * round style.size)
+                                       [ moveY (-style.size * 3/4) <| toForm lfsr
+                                       , move (-w + style.size, style.size) <| toForm scalars]
 
 scalar : LFSRStyle -> String -> Element
 scalar style val = let size = round style.size 

@@ -20,6 +20,8 @@ time, mark, audio, video {
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+    box-sizing: padding-box;
+    text-decoration: inherit;
 }
 
 /* Some base style */
@@ -44,13 +46,13 @@ a:hover, a:visited { color: blue }
 b, strong { font-weight: bold }
 i, em { font-style: italic }
 
-h1 { font-size: 200% }
+h1 { font-size: 210% }
 h2 { font-size: 150% }
 h3 { font-size: 130% }
 h4 { font-size: 120% }
 h5 { font-size: 110% }
 h4, h5, h6 { font-weight: bold }
-h2, h3, h4, h5, h6 { margin-top: 1em; }
+h1, h2, h3, h4, h5, h6 { margin-top: 1em; }
 
 ul, ol { margin-left: 1.1em; }
 ul li { list-style-type: circle; }
@@ -76,9 +78,8 @@ sup, sub {
     width: 1024px;
     box-sizing: border-box;
     padding: 25px;
-    border: solid 0.1px #ddd;
     border-radius: 10px;
-    cursor: url(laser.cur) 8 8, url(laser.png) 8 8, default;
+    cursor: url(assets/laser.cur) 8 8, url(assets/laser.png) 8 8, default;
 
 /*    opacity: 0.3;
     -webkit-transition: opacity 1s;
@@ -86,6 +87,10 @@ sup, sub {
     -ms-transition:     opacity 1s;
     -o-transition:      opacity 1s;
     transition:         opacity 1s; */
+}
+
+.debug .step {
+    border: solid 1px #ddd;
 }
 
 .step.active {
@@ -137,7 +142,26 @@ sup, sub {
 
 /* Specific styles */
 #title { text-align: center; }
-#title a { color: inherit; } 
+#title h3 a, #title .affiliation a { color: inherit; } 
+#title h3 { margin-bottom: 20px; }
+#title .affiliation { margin-bottom: 60px; }
+#title img { margin: 0 80px; }
+#title .watch {
+    margin-top: 40px;
+    font-size: 80%;
+}
+
+#Fpbar > * {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+#this-work .simple { opacity: 1; }
+#this-work .hard   { opacity: 0; }
+.impress-on-repr #this-work .simple
+{ opacity: 0; }
+.impress-on-repr #this-work .hard
+{ opacity: 1; }
 
 .check:after {
     color: #0f0;
@@ -158,7 +182,14 @@ sup, sub {
     margin-bottom: 3em;
 }
 
-.impress-on-compprod-zoom #cprod {
+#compprod { padding: 190px; }
+#compprod > div {
+    outline: solid 3px red;
+    padding: 10px;
+    background-color: white;
+}
+
+.impress-on-compprod-zoom .winner {
     font-weight: bold;
     color: red;
 }
@@ -167,3 +198,8 @@ sup, sub {
 .impress-on-tmul .horner {
     outline: solid thick red;
 }
+
+s, .t {
+    color: red;
+}
+
