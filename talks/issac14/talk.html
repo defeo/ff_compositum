@@ -23,6 +23,38 @@
       <p>Please update your browser and/or activate JavaScript.</p>
     </div>
 
+    <!------ SVG definitions ------->
+    <svg class="abs" style="top:0;right:0" width="1024" height="768">
+      <defs>
+	<marker id="arrow" orient="auto" style="overflow:visible">
+	  <path
+	     d="M 0,0 8,-5 0,0 8,5 0,0 z"
+	     transform="matrix(-1,0,0,-1,0,0)"
+	     style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none" />
+	</marker>
+	<marker id="hook" orient="auto" style="overflow:visible">
+	  <path
+	     d="M 0,0 A 5,5 0 0 1 0,-10"
+	     style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none" />
+	</marker>
+	<marker id="hook-inv" orient="auto" style="overflow:visible">
+	  <path
+	     d="M 0,0 A 5,5 0 0 1 0,-10"
+	     transform="matrix(1,0,0,1,0,10)"
+	     style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none" />
+	</marker>
+	<marker id="dbl-arrow" orient="auto" style="overflow:visible">
+	  <path
+	     d="M 0,0 8,-5 0,0 8,5 0,0 z"
+	     style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none" />
+	  <path
+	     d="M 0,0 8,-5 0,0 8,5 0,0 z"
+	     transform="matrix(1,0,0,1,-5,0)"
+	     style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none" />
+	</marker>
+      </defs>
+    </svg>
+
     <div id="impress">
 
       <!-- Title slide -->
@@ -35,13 +67,23 @@
 	de Versailles</a>,
 	<a href="http://www.uwo.ca/">²University of Western Ontario</a></p>
 
-	<p>
+	<p class="logos">
 	  <a href="http://www.uvsq.fr/"><img src="assets/uvsq-logo.svg" width="300px"></a>
 	  <a href="http://www.uwo.ca/"><img src="assets/western-logo.svg" width="300px"></a>
 	</p>
 
-	<p class="watch">Watch these slides
-	  at <a href="http://defeo.lu/ff_compositum/issac14">defeo.lu/ff_compositum/issac14</a></p>
+	<p class="watch">Get these slides
+	  at <a href="http://defeo.lu/ff_compositum/">defeo.lu/ff_compositum/</a>
+	  <br>
+	  <a rel="license"
+	  href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="(C)"
+	  style="border-width:0"
+	  src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png"
+	  /></a> <small><a href="http://defeo.lu/">Luca De Feo</a>,
+	  2014, licensed under
+	    <a rel="license"
+	  href="http://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA
+	  4.0</a>.</small></p>
       </div>
 
       <div id="overview" class="step" data-x="550" data-y="2500" data-scale="7">
@@ -58,7 +100,7 @@
 
       <div id="Fpbar" class="step panel" data-x="1100" data-y="700">
 	<div style="top:60px;left:500px">
-	  $\bar{\F}_p = \bigcup\F_p^{(ℓ)} = ⨂\F_p^{(ℓ)}$
+	  $$\bar{\F}_p = \bigcup_n\F_{p^n} = \bigotimes_{ℓ\text{ prime}}\F_p^{(ℓ)}$$
 	</div>
 
 	<div style="bottom:157px;left:140px">$\F_p^{(ℓ)}$</div>
@@ -66,6 +108,10 @@
 	<div style="bottom:425px;left:950px">$\F_p^{(2)}$</div>
 
 	<div style="bottom:260px;left:800px">$\F_{p^4}$</div>
+
+	<div style="bottom:220px;left:300px">$\F_{p^{3ℓ}}$</div>
+	<div style="bottom:285px;left:600px">$\F_{p^6}$</div>
+	
 
 	<div style="bottom:85px;left:400px">$\F_{p^ℓ}$</div>
 	<div style="bottom:175px;left:500px">$\F_{p^3}$</div>
@@ -76,8 +122,33 @@
 	<div style="bottom:40px;left:200px">
 	  <span class="inlinemath">$\ell$</span>-adic tower
 	</div>
-      </div>
 
+	<svg class="abs" style="top:0;right:0" width="1024" height="768">
+	  <g transform="matrix(1 0 0 -1 0 768)"
+	     stroke="black" stroke-width="2">
+	    
+	    <path d="m 500,225 -200,45" />
+	    <path d="m 400,135 -100,135" />
+
+	    <path d="m 700,200 -100,135" />
+	    <path d="m 500,235 100,100" />
+
+	    <path d="M 360,150 170,200" 
+		  stroke-dasharray="5 10" />
+	    <path d="M 560,100 430,130" />
+
+	    <path d="M 465,255 355,410" 
+		  stroke-dasharray="5 10" />
+	    <path d="M 575,125 520,195" />
+	    
+	    <path d="M 822,342 922,442"
+		  stroke-dasharray="5 10" />
+	    <path d="M 714,234 768,288" />
+	    <path d="M 600,120 660,180" />
+	  </g>
+	</svg>
+      </div>
+      
       <div id="past-work" class="step" data-y="1024">
 	<h4>Past work on <span class="inlinemath">$\ell$</span>-adic towers</h4>
 
@@ -107,9 +178,9 @@
       </div>
 
       <div id="this-work" class="step" data-y="1612">
-	<div class="abs centered" style="left:512px;top:-120px">
+	<div class="abs centered" style="left:512px;top:-140px">
 	  <span class="abs centered simple">$L$</span>
-	  <span class="abs centered hard">$k[X,Y]/(P,Q) \simeq k[Z]/(R)$</span>
+	  <span class="abs centered hard isom">$k[X,Y]/(P,Q) \simeq k[Z]/(R)$</span>
 	</div>
 	<div class="abs centered" style="left:312px;top:0px">
  	  <span class="abs centered simple">$M$</span>
@@ -121,7 +192,24 @@
 	  <span class="abs centered hard">$k[Y]/(Q)$</span>
 	  <span class="abs gen" style="bottom:1.5ex;right:0">$y$</span>
 	</div>
-	<div class="abs centered" style="left:512px;top:120px">$k$</div>
+	<div class="abs centered" style="left:512px;top:140px"><span>$k$</span></div>
+
+	<div style="font-size:70%">
+	  <div class="abs centered" style="left:400px;top:-80px">$m$</div>
+	  <div class="abs centered" style="left:622px;top:-80px">$n$</div>
+
+	  <div class="abs centered" style="left:400px;top:80px">$m$</div>
+	  <div class="abs centered" style="left:622px;top:80px">$n$</div>
+	</div>
+
+	<svg class="abs" style="left:0;top:-384px" width="1024" height="768">
+	  <g stroke="black" stroke-width="2" transform="translate(0 384)">
+	    <path id="ML" class="embed project" d="M 362,-42 472,-112" />
+	    <path id="NL" class="embed project" d="M 662,-42 552,-112" />
+	    <path id="kN" d="M 512,140 712,0" />
+	    <path id="kM" d="M 512,140 312,0" />
+	  </g>
+	</svg>
       </div>
 
       <div id="repr" class="step panel" data-y="1812">
@@ -135,13 +223,17 @@
 
 	  <h5 class="now then">Operations</h5>
 	  <ul class="now then">
-	    <li>Embed: $k[X]/(P) \hookrightarrow K[Z]/(R)$.</li>
-	    <li>Project: $K[Z]/(R) \twoheadrightarrow K[X]/(P)$ (in
+	    <li class="embed">Embed: $k[X]/(P) \hookrightarrow K[Z]/(R)$.</li>
+	    <li class="project">Project: $K[Z]/(R) \twoheadrightarrow K[X]/(P)$ (in
 	      particular Embed<sup>-1</sup>).</li>
-	    <li>Isomorphism: $K[Z]/(R) \longleftrightarrow K[X,Y]/(P,Q)$ (both ways).</li>
+	    <li class="isom">Isomorphism: $K[Z]/(R) \longleftrightarrow K[X,Y]/(P,Q)$ (both ways).</li>
 	  </ul>
 	</div>
       </div>
+
+      <!--div id="repr-e" class="step panel" data-y="1812"></div>
+      <div id="repr-p" class="step panel" data-y="1812"></div>
+      <div id="repr-i" class="step panel" data-y="1812"></div-->
 
       <div id="results-trans" class="step" data-y="2160">
       </div>
@@ -187,7 +279,7 @@
       </div>
 
       <div id="compprod" class="step now then" data-x="0" data-y="1580" data-scale="0.45">
-	<div>
+	<div class="overlay">
 	  <p><em>Obvious choices</em> for defining $L$:</p>
 	  <ul>
 	    <li>Composed sum: $R(x+y) = 0$</li>
@@ -199,6 +291,9 @@
 	  <p>Classic algorithms ([<a href="http://www.sciencedirect.com/science/article/pii/S0747717105001203">Bostan, Flajolet, Salvy & Schost
 	  2006</a>]): <span class="push-right">$\tilde{O}(mn)$</span></p>
 	</div>
+	
+	<!--div class="abs centered" style="left:312px;top:0px">$x$</div>
+	<div class="abs centered" style="left:712px;top:0px">$y$</div-->
       </div>
 
       <div id="compprod-zoom" class="step" data-x="0" data-y="1570" data-scale="0.25">
@@ -324,7 +419,7 @@ for <script type="math/tex">i \in (...,0]</script>
           
           <p class="spacer"></p>
           <p>Let $L/k$ be a finite field extension, the <em>trace</em>
-            $\Tr_{L/k}$ defines a <em>bilinear form</em><p>
+            $\Tr_{L/k}$ defines a <em>non-degenerate bilinear form</em><p>
           <p class="centered">$〈a,b〉 = \Tr(ab)$</p>
           <p>identifying $L$ to its dual space <s>$L^*$</s>.</p>
         </div>
@@ -383,7 +478,7 @@ for <script type="math/tex">i \in (...,0]</script>
         <p>$M=K[X]/(P)$ has two useful bases
           $$ξ = (1, x, \dots, x^{m-1}),\qquad \color{red}{ξ^* = (1^*,x^*,\dots,(x^{m-1})^*)}.$$
 
-          $N=K[Z]/(Q)$ has two
+          $N=K[Y]/(Q)$ has two
           $$υ = (1, y, \dots, y^{n-1}),\qquad \color{red}{υ^* = (1^*,y^*,\dots,(y^{n-1})^*)}.$$
 
           $L=K[X,Y]/(P,Q)=K[Z]/(R)$ has six!
@@ -452,32 +547,7 @@ for <script type="math/tex">i \in (...,0]</script>
         <p class="centered"><img src="assets/creat.svg" width="800"></p>
       </div>
 
-      <div id="conclusion" class="step" data-x="-1100" data-y="4652">
-	<h4>What you get</h4>
-	<ul>
-	  <li>A construction for the <i>compositum</i> that plays well
-	    with lattices of (finite) fields.</li>
-	  <li>New algorithms, easy to implement, extremely fast in
-	    practice.</li>
-	  <li>Asymptotic complexity close to optimum for several
-	    operations.</li>
-	  <li>A construction for $\bar{\F_p}$ with the best known
-	    complexity (not optimal, though).</li>
-	  <li>A fresh look on the use of dual bases and transposed
-	    algorithms.</li>
-	</ul>
-	
-	<h4>What you'll miss</h4>
-	<ul>
-	  <li>Optimal isomorphism algorithms.</li>
-	  <li>Construction not always applicable to non-finite
-	    fields.</li>
-	  <li>Still need good algorithms for isomorphisms of finite
-	    fields.</li>
-	</ul>
-      </div>
-
-      <div id="thanks" class="step centered" data-x="-1100" data-y="5420">
+      <div id="thanks" class="step centered" data-x="-1100" data-y="4652">
 	<h1>Thanks!</h1>
 
 	<p class="spacer"></p>
@@ -494,10 +564,9 @@ for <script type="math/tex">i \in (...,0]</script>
 	  
 	  <img src="assets/GitHub-Mark-32px.png" alt="" height="26"> Source
 	  on <a href="https://github.com/defeo/ff_compositum/tree/master/talks/issac14">GitHub</a>.</p>
-      </div-->
+      </div>
     </div>
 
-    <div>
 
     <script src="impress.js/js/impress.js"></script>
     <script>impress().init();</script>

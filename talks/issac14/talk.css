@@ -141,27 +141,63 @@ sup, sub {
 
 
 /* Specific styles */
+svg { z-index: -1 }
+
 #title { text-align: center; }
 #title h3 a, #title .affiliation a { color: inherit; } 
 #title h3 { margin-bottom: 20px; }
 #title .affiliation { margin-bottom: 60px; }
-#title img { margin: 0 80px; }
+#title .logos img { margin: 0 80px; }
 #title .watch {
     margin-top: 40px;
     font-size: 80%;
 }
+#title small {
+    font-size: 60%;
+}
 
-#Fpbar > * {
+#Fpbar > div {
     position: absolute;
     transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 10;
 }
 
 #this-work .simple { opacity: 1; }
 #this-work .hard   { opacity: 0; }
-.impress-on-repr #this-work .simple
+#this-work .gen    { opacity: 0; }
+#this-work > div > span {
+    background-color: white; 
+    z-index: 10;
+}
+.impress-on-repr #this-work .simple,
+.impress-on-repr-e #this-work .simple,
+.impress-on-repr-p #this-work .simple,
+.impress-on-repr-j #this-work .simple
 { opacity: 0; }
-.impress-on-repr #this-work .hard
+.impress-on-repr #this-work .hard,
+.impress-on-repr-e #this-work .hard,
+.impress-on-repr-p #this-work .hard,
+.impress-on-repr-i #this-work .hard
 { opacity: 1; }
+
+.impress-on-repr-e #ML { 
+    /* Not supported by Firefox. Damn! */
+    marker-start:url(#hook);
+    marker-end:url(#arrow); 
+}
+.impress-on-repr-e #NL { 
+    marker-start:url(#hook-inv);
+    marker-end:url(#arrow); 
+}
+.impress-on-repr-p #ML, 
+.impress-on-repr-p #NL { 
+    marker-start:url(#dbl-arrow);
+}
+.impress-on-repr-e .embed { color: red; }
+.impress-on-repr-p .project { color: red; }
+.impress-on-repr-i .isom { color: red; }
+
 
 .check:after {
     color: #0f0;
@@ -183,7 +219,7 @@ sup, sub {
 }
 
 #compprod { padding: 190px; }
-#compprod > div {
+#compprod > .overlay {
     outline: solid 3px red;
     padding: 10px;
     background-color: white;
