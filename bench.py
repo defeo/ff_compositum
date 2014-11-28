@@ -147,18 +147,38 @@ def test_irred(p, i1, i2, number=0, repeat=3):
     tmul = sage_timeit('c*c', context, number=number, repeat=repeat, seconds=True)
     ttmul = sage_timeit('c*d', context, number=number, repeat=repeat, seconds=True)
     tiso = sage_timeit('c.eltseq_dual_python(P,Q)', context, number=number, repeat=repeat, seconds=True)
-    tbsgs = sage_timeit('c.eltseq_mono_BSGS(P,Q)', context, number=number, repeat=repeat, seconds=True)
+    tbsgs = sage_timeit('c.eltseq_dual_BSGS(P,Q)', context, number=number, repeat=repeat, seconds=True)
+    tmatrix = sage_timeit('c.eltseq_dual_matrix(P,Q)', context, number=number, repeat=repeat, seconds=True)
 
-    return tcomp, tembed_pre, tembed, tproject_pre, tproject, tmono2dual, tmul, ttmul, tiso, tbsgs
+    return tcomp, tembed_pre, tembed, tproject_pre, tproject, tmono2dual, tmul, ttmul, tiso, tbsgs, tmatrix
+
+###
+
+def test_python(p, i1, i2, number=0, repeat=3):
+    import compositum as c
+    K = GF(p)
+    P = K.extension(i1, 'x')
+    R, phi, phinv = c.ffext(P, i2)
+    
+    a = P.random_element()
+    c = R.random_element()
+    d = R.random_element()
+    context = globals()
+    context.update(locals())
+    tembed = sage_timeit('phi(a)', context, number=number, repeat=repeat, seconds=True)
+    tproject = sage_timeit('phinv(c)', context, number=number, repeat=repeat, seconds=True)
+    tmul = sage_timeit('c*d', context, number=number, repeat=repeat, seconds=True)
+
+    return tembed, tproject, tmul
 
 
-def bench(p, start=2, stop=200):
+def bench(p, start=2, stop=200, routine=test_irred):
     l = []
-    i = start
+    i = ZZ(start)
     while i < stop:
 	print i,
         try:
-            l.append((i, test_irred(p, i, i+1)))
+            l.append((i, routine(p, i, i+1)))
         except:
             print "failed"
 	else:
@@ -169,7 +189,7 @@ def bench(p, start=2, stop=200):
 def gplot_out(l):
     s = "#\t" + "\t\t".join(('Comp\t', 'EmbedPre', 'Embed\t', 
                              'ProjectPre', 'Project\t', 'M2D\t', 
-                             'Mulmod\t', 'Tmulmod\t', 'Iso\t', 'Bsgs')) + "\n"
+                             'Mulmod\t', 'Tmulmod\t', 'Iso\t', 'Bsgs\t', 'Matrix')) + "\n"
     for i, t in l:
         s += "%d\t%s\n" % (i, "\t".join(map(str, t)))
     return s
