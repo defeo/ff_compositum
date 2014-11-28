@@ -1,0 +1,241 @@
+@import '/my-web-fonts/stix.css';
+
+/* Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    box-sizing: padding-box;
+    text-decoration: inherit;
+}
+
+/* Some base style */
+
+body {
+    font-family: "stix", serif;
+    font-size: 26pt;
+    line-height: 1.3;
+}
+
+code {
+    font-family: monospace;
+    line-height: 1.5;
+}
+
+a { 
+    color: blue;
+    text-decoration: none; 
+}
+a:hover, a:visited { color: blue }
+
+b, strong { font-weight: bold }
+i, em { font-style: italic }
+
+h1 { font-size: 210% }
+h2 { font-size: 150% }
+h3 { font-size: 130% }
+h4 { font-size: 120% }
+h5 { font-size: 110% }
+h4, h5, h6 { font-weight: bold }
+h1, h2, h3, h4, h5, h6 { margin-top: 1em; }
+
+ul, ol { margin-left: 1.1em; }
+ul li { list-style-type: circle; }
+
+dd { display: inline; font-weight: bold; }
+dd:before { content: ""; display: block; }
+dt { display: inline; margin-left: 1em;}
+
+sup, sub {
+    font-size: 60%
+}
+
+.MathJax { margin: 0 1ex !important; }
+.inlinemath .MathJax { margin: 0 !important;}
+
+/* Hide the fallback message */
+.impress-supported .fallback-message { display: none }
+
+/* On with the presentation */
+
+.step {
+    position: relative;
+    width: 1024px;
+    box-sizing: border-box;
+    padding: 25px;
+    border-radius: 10px;
+    cursor: url(assets/laser.cur) 8 8, url(assets/laser.png) 8 8, default;
+
+/*    opacity: 0.3;
+    -webkit-transition: opacity 1s;
+    -moz-transition:    opacity 1s;
+    -ms-transition:     opacity 1s;
+    -o-transition:      opacity 1s;
+    transition:         opacity 1s; */
+}
+
+.debug .step {
+    border: solid 1px #ddd;
+}
+
+.step.active {
+/*    opacity: 1; */
+}
+
+.before, .now, .then {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition:    opacity 0.5s;
+    -ms-transition:     opacity 0.5s;
+    -o-transition:      opacity 0.5s;
+    transition:         opacity 0.5s;
+}    
+.future .before, .present .now, .past .then,
+.future.before, .present.now, .past.then
+{ opacity : 1 }
+
+/* Some convenience classes */
+
+.centered {
+    margin: auto;
+    text-align: center;
+}
+.impress-supported .abs.centered {
+    transform: translate(-50%, -50%);
+}
+
+.impress-supported .abs {
+    position: absolute;
+}
+
+.push-right {
+    float: right;
+}
+
+.spacer {
+    height: 1em;
+}
+
+/* A panel takes up a full screen space, for overlays */
+.panel {
+    height: 768px;
+}
+
+#overview { display: none }
+.impress-on-overview .step { cursor: pointer; }
+
+
+/* Specific styles */
+svg { z-index: -1 }
+
+#title { text-align: center; }
+#title h3 a, #title .affiliation a { color: inherit; } 
+#title h3 { margin-bottom: 20px; }
+#title .affiliation { margin-bottom: 60px; }
+#title .logos img { margin: 0 80px; }
+#title .watch {
+    margin-top: 40px;
+    font-size: 80%;
+}
+#title small {
+    font-size: 60%;
+}
+
+#Fpbar > div {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 10;
+}
+
+#this-work .simple { opacity: 1; }
+#this-work .hard   { opacity: 0; }
+#this-work .gen    { opacity: 0; }
+#this-work > div > span {
+    background-color: white; 
+    z-index: 10;
+}
+.impress-on-repr #this-work .simple,
+.impress-on-repr-e #this-work .simple,
+.impress-on-repr-p #this-work .simple,
+.impress-on-repr-j #this-work .simple
+{ opacity: 0; }
+.impress-on-repr #this-work .hard,
+.impress-on-repr-e #this-work .hard,
+.impress-on-repr-p #this-work .hard,
+.impress-on-repr-i #this-work .hard
+{ opacity: 1; }
+
+.impress-on-repr-e #ML { 
+    /* Not supported by Firefox. Damn! */
+    marker-start:url(#hook);
+    marker-end:url(#arrow); 
+}
+.impress-on-repr-e #NL { 
+    marker-start:url(#hook-inv);
+    marker-end:url(#arrow); 
+}
+.impress-on-repr-p #ML, 
+.impress-on-repr-p #NL { 
+    marker-start:url(#dbl-arrow);
+}
+.impress-on-repr-e .embed { color: red; }
+.impress-on-repr-p .project { color: red; }
+.impress-on-repr-i .isom { color: red; }
+
+
+.check:after {
+    color: #0f0;
+    font-size: 200%;
+    font-style: normal;
+    content: "✓" 
+}
+.fail:after {
+    color: #f00;
+    font-size: 200%;
+    font-style: italic;
+    content: "✕"
+}
+
+#techniques li {
+    font-size: 140%;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+#compprod { padding: 190px; }
+#compprod > .overlay {
+    outline: solid 3px red;
+    padding: 10px;
+    background-color: white;
+}
+
+.impress-on-compprod-zoom .winner {
+    font-weight: bold;
+    color: red;
+}
+
+.impress-on-tmul-trans .horner, 
+.impress-on-tmul .horner {
+    outline: solid thick red;
+}
+
+s, .t {
+    color: red;
+}
+
