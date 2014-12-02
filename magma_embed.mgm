@@ -154,7 +154,17 @@ procedure test_embed_irred(p, i1, i2, trials)
 
     "#convert";
 
-    p, i1, i2, i1*i2, tpoly, text, tembed, tconvert/trials;
+    tiso:=0;
+    for n in [1..trials] do
+	a:=[Random(K1) for i in [0..i2]];
+	t:=Cputime();
+	b:=Seqelt(a);
+	tiso+:=Cputime()-t;
+    end for;
+
+    "#isomorphism";
+
+    p, i1, i2, i1*i2, tpoly, text, tembed, tconvert/trials, tiso/trials;
 end procedure;
 
 
@@ -192,7 +202,17 @@ procedure test_embed_ext(p, i1, i2, trials)
 
     "#convert";
 
-    p, i1, i2, i1*i2, text, tembed, tconvert/trials;
+    tiso:=0;
+    for n in [1..trials] do
+	a:=[Random(K1) for i in [0..i2]];
+	t:=Cputime();
+	b:=Seqelt(a);
+	tiso+:=Cputime()-t;
+    end for;
+
+    "#isomorphism";
+    
+    p, i1, i2, i1*i2, text, tembed, tconvert/trials, tiso/trials;
 end procedure;
 
 
@@ -237,7 +257,17 @@ procedure test_embed_compositum(p, i1, i2, trials)
 
     "#convert";
 
-    p, i1, i2, i1*i2, text, tcomp, tembed, tconvert/trials;
+    tiso:=0;
+    for n in [1..trials] do
+	a:=[Random(K1) for i in [0..i2]];
+	t:=Cputime();
+	b:=Seqelt(a);
+	tiso+:=Cputime()-t;
+    end for;
+
+    "#isomorphism";
+    
+    p, i1, i2, i1*i2, text, tcomp, tembed, tconvert/trials, tiso/trials;
 end procedure;
 
 
@@ -275,7 +305,17 @@ procedure test_embed_relative(p, i1, i2, trials)
 
     "#convert";
 
-    p, i1, i2, i1*i2, text, tembed, tconvert/trials;
+    tiso:=0;
+    for n in [1..trials] do
+	a:=[Random(K1) for i in [0..i2]];
+	t:=Cputime();
+	b:=Seqelt(a);
+	tiso+:=Cputime()-t;
+    end for;
+
+    "#isomorphism";
+    
+    p, i1, i2, i1*i2, text, tembed, tconvert/trials, tiso/trials;
 end procedure;
 
 /*-----------------------------------------------------------*/
