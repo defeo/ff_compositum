@@ -14,7 +14,9 @@
     sage: ?sage_timeit
 """
 
-from sage.rings.finite_rings.constructor import GF
+from sage.rings.polynomial.polynomial_ring_constructor import PolynomialRing
+from sage.rings.padics.factory import Zp
+from sage.rings.finite_rings.finite_field_constructor import GF
 from sage.misc.sage_timeit import sage_timeit
 from sage.rings.arith import factor
 from sage.rings.ff_compositum.all import *
